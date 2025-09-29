@@ -2,6 +2,7 @@
 
 [![AnkiWeb](https://img.shields.io/badge/AnkiWeb-699193084-blue)](https://ankiweb.net/shared/info/699193084)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/abdmohrat)
 
 Convert USMLE question IDs to Anki search queries instantly! Perfect for medical students using UWorld question banks with the **AnKing_v12 deck** from AnkiHub.
 
@@ -69,6 +70,7 @@ Found a bug or have a suggestion? Please [open an issue](https://github.com/abdm
 **abdmohrat**
 - GitHub: [@abdmohrat](https://github.com/abdmohrat)
 - AnkiWeb: [Profile](https://ankiweb.net/shared/by-author/699193084)
+- Ko-fi: [Support me](https://ko-fi.com/abdmohrat) ☕
 
 ## 📄 License
 
@@ -86,6 +88,7 @@ Contributions are welcome! Feel free to:
 If this addon helped you with your USMLE studies, consider:
 - ⭐ **Starring this repository**
 - 📝 **Rating it on [AnkiWeb](https://ankiweb.net/shared/info/699193084)**
+- ☕ **[Buying me a coffee](https://ko-fi.com/abdmohrat)** to support development
 - 🐛 **Reporting bugs or suggesting features**
 - 📢 **Sharing with fellow medical students**
 
