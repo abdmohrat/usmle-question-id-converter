@@ -1,6 +1,6 @@
 # USMLE Question ID Converter Addon for Anki
 # Author: abdmohrat
-# Version: 1.0.1
+# Version: 1.0.2
 
 from aqt import mw
 from aqt.qt import *
@@ -52,7 +52,7 @@ def show_converter_dialog():
     """
     dialog = QDialog(mw)
     dialog.setWindowTitle("USMLE Question ID Converter")
-    dialog.setFixedSize(700, 450)
+    dialog.setFixedSize(750, 450)
     
     layout = QVBoxLayout()
     
@@ -109,14 +109,43 @@ def show_converter_dialog():
     convert_btn = QPushButton("Convert")
     copy_btn = QPushButton("Copy to Clipboard")
     search_btn = QPushButton("Search in Anki")
-    support_btn = QPushButton("☕ Support")
-    support_btn.setStyleSheet("background-color: #29abe0; color: white; font-weight: bold;")
+    
+    # Support and Review buttons with better styling
+    support_btn = QPushButton("☕ Buy Me a Coffee")
+    support_btn.setStyleSheet("""
+        QPushButton {
+            background-color: #29abe0;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        QPushButton:hover {
+            background-color: #1a8fc4;
+        }
+    """)
+    
+    review_btn = QPushButton("⭐ Rate Addon")
+    review_btn.setStyleSheet("""
+        QPushButton {
+            background-color: #f39c12;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        QPushButton:hover {
+            background-color: #e67e22;
+        }
+    """)
+    
     close_btn = QPushButton("Close")
     
     button_layout.addWidget(convert_btn)
     button_layout.addWidget(copy_btn)
     button_layout.addWidget(search_btn)
     button_layout.addWidget(support_btn)
+    button_layout.addWidget(review_btn)
     button_layout.addWidget(close_btn)
     
     layout.addLayout(button_layout)
@@ -187,11 +216,16 @@ def show_converter_dialog():
         """Open Ko-fi support page"""
         openLink("https://ko-fi.com/abdmohrat")
     
+    def review_clicked():
+        """Open AnkiWeb review page"""
+        openLink("https://ankiweb.net/shared/review/699193084")
+    
     # Connect buttons
     convert_btn.clicked.connect(convert_clicked)
     copy_btn.clicked.connect(copy_clicked)
     search_btn.clicked.connect(search_clicked)
     support_btn.clicked.connect(support_clicked)
+    review_btn.clicked.connect(review_clicked)
     close_btn.clicked.connect(close_clicked)
     
     # Connect radio buttons
