@@ -1,6 +1,6 @@
 # USMLE Question ID Converter Addon for Anki
 # Author: abdmohrat
-# Version: 1.0.2
+# Version: 1.0.3
 
 from aqt import mw
 from aqt.qt import *
@@ -52,16 +52,62 @@ def show_converter_dialog():
     """
     dialog = QDialog(mw)
     dialog.setWindowTitle("USMLE Question ID Converter")
-    dialog.setFixedSize(750, 450)
+    dialog.setFixedSize(750, 500)
     
-    layout = QVBoxLayout()
+    # Main layout
+    main_layout = QHBoxLayout()
+    
+    # Left side - main content
+    left_layout = QVBoxLayout()
+    
+    # Right side - support buttons
+    right_layout = QVBoxLayout()
+    right_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+    
+    # Support buttons in top right
+    support_btn = QPushButton("☕ Buy Me\na Coffee")
+    support_btn.setFixedSize(90, 60)
+    support_btn.setStyleSheet("""
+        QPushButton {
+            background-color: #29abe0;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 11px;
+        }
+        QPushButton:hover {
+            background-color: #1a8fc4;
+        }
+    """)
+    
+    review_btn = QPushButton("⭐ Rate\nAddon")
+    review_btn.setFixedSize(90, 60)
+    review_btn.setStyleSheet("""
+        QPushButton {
+            background-color: #f39c12;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 11px;
+        }
+        QPushButton:hover {
+            background-color: #e67e22;
+        }
+    """)
+    
+    right_layout.addWidget(support_btn)
+    right_layout.addSpacing(10)
+    right_layout.addWidget(review_btn)
+    right_layout.addStretch()
     
     # Instructions
     instructions = QLabel("""
     Paste your USMLE question IDs below (comma-separated):
     Example: 21656, 19263, 4466, 12477, 4288
     """)
-    layout.addWidget(instructions)
+    left_layout.addWidget(instructions)
     
     # Step selection
     step_group = QGroupBox("Select USMLE Step:")
@@ -81,75 +127,47 @@ def show_converter_dialog():
     step_layout.addWidget(step1_radio)
     step_layout.addWidget(step2_radio)
     step_group.setLayout(step_layout)
-    layout.addWidget(step_group)
+    left_layout.addWidget(step_group)
     
     # Input text area
     input_text = QTextEdit()
     input_text.setPlaceholderText("Paste your question IDs here...")
     input_text.setMaximumHeight(100)
-    layout.addWidget(input_text)
+    left_layout.addWidget(input_text)
     
     # Output text area
     output_label = QLabel("Anki search query:")
-    layout.addWidget(output_label)
+    left_layout.addWidget(output_label)
     
     output_text = QTextEdit()
     output_text.setReadOnly(True)
-    layout.addWidget(output_text)
+    left_layout.addWidget(output_text)
     
     # Current selection display
     initial_step = "Step 1" if step1_radio.isChecked() else "Step 2"
     current_step_label = QLabel(f"Current selection: {initial_step} (remembered from last use)")
     current_step_label.setStyleSheet("color: blue; font-weight: bold;")
-    layout.addWidget(current_step_label)
+    left_layout.addWidget(current_step_label)
     
-    # Buttons
+    # Bottom buttons
     button_layout = QHBoxLayout()
     
     convert_btn = QPushButton("Convert")
     copy_btn = QPushButton("Copy to Clipboard")
     search_btn = QPushButton("Search in Anki")
-    
-    # Support and Review buttons with better styling
-    support_btn = QPushButton("☕ Buy Me a Coffee")
-    support_btn.setStyleSheet("""
-        QPushButton {
-            background-color: #29abe0;
-            color: white;
-            font-weight: bold;
-            border-radius: 5px;
-            padding: 5px 10px;
-        }
-        QPushButton:hover {
-            background-color: #1a8fc4;
-        }
-    """)
-    
-    review_btn = QPushButton("⭐ Rate Addon")
-    review_btn.setStyleSheet("""
-        QPushButton {
-            background-color: #f39c12;
-            color: white;
-            font-weight: bold;
-            border-radius: 5px;
-            padding: 5px 10px;
-        }
-        QPushButton:hover {
-            background-color: #e67e22;
-        }
-    """)
-    
     close_btn = QPushButton("Close")
     
     button_layout.addWidget(convert_btn)
     button_layout.addWidget(copy_btn)
     button_layout.addWidget(search_btn)
-    button_layout.addWidget(support_btn)
-    button_layout.addWidget(review_btn)
     button_layout.addWidget(close_btn)
     
-    layout.addLayout(button_layout)
-    dialog.setLayout(layout)
+    left_layout.addLayout(button_layout)
+    
+    # Combine left and right layouts
+    main_layout.addLayout(left_layout)
+    main_layout.addLayout(right_layout)
+    dialog.setLayout(main_layout)
     
     def get_selected_step():
         return "Step1" if step1_radio.isChecked() else "Step2"
