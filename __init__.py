@@ -4,7 +4,7 @@
 
 from aqt import mw
 from aqt.qt import *
-from aqt.utils import showInfo
+from aqt.utils import showInfo, openLink
 import re
 
 # Configuration key for storing user preferences
@@ -185,8 +185,7 @@ def show_converter_dialog():
     
     def support_clicked():
         """Open Ko-fi support page"""
-        import webbrowser
-        webbrowser.open("https://ko-fi.com/abdmohrat")
+        openLink("https://ko-fi.com/abdmohrat")
     
     # Connect buttons
     convert_btn.clicked.connect(convert_clicked)
