@@ -1,6 +1,6 @@
 # USMLE Question ID Converter Addon for Anki
 # Author: abdmohrat
-# Version: 1.0.0
+# Version: 1.0.1
 
 from aqt import mw
 from aqt.qt import *
@@ -52,7 +52,7 @@ def show_converter_dialog():
     """
     dialog = QDialog(mw)
     dialog.setWindowTitle("USMLE Question ID Converter")
-    dialog.setFixedSize(650, 450)
+    dialog.setFixedSize(700, 450)
     
     layout = QVBoxLayout()
     
@@ -109,11 +109,14 @@ def show_converter_dialog():
     convert_btn = QPushButton("Convert")
     copy_btn = QPushButton("Copy to Clipboard")
     search_btn = QPushButton("Search in Anki")
+    support_btn = QPushButton("☕ Support")
+    support_btn.setStyleSheet("background-color: #29abe0; color: white; font-weight: bold;")
     close_btn = QPushButton("Close")
     
     button_layout.addWidget(convert_btn)
     button_layout.addWidget(copy_btn)
     button_layout.addWidget(search_btn)
+    button_layout.addWidget(support_btn)
     button_layout.addWidget(close_btn)
     
     layout.addLayout(button_layout)
@@ -180,10 +183,16 @@ def show_converter_dialog():
         save_step_preference()
         dialog.close()
     
+    def support_clicked():
+        """Open Ko-fi support page"""
+        import webbrowser
+        webbrowser.open("https://ko-fi.com/abdmohrat")
+    
     # Connect buttons
     convert_btn.clicked.connect(convert_clicked)
     copy_btn.clicked.connect(copy_clicked)
     search_btn.clicked.connect(search_clicked)
+    support_btn.clicked.connect(support_clicked)
     close_btn.clicked.connect(close_clicked)
     
     # Connect radio buttons
