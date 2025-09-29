@@ -1,5 +1,5 @@
 # USMLE Question ID Converter Addon for Anki
-# Author: Abdalrahman Mahrat
+# Author: abdmohrat
 # Version: 1.0.0
 
 from aqt import mw
