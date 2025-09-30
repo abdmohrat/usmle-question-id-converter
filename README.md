@@ -121,17 +121,6 @@ Found a bug or have a suggestion? Please [open an issue](https://github.com/abdm
 - 📋 Copy to clipboard functionality
 - 🔍 Direct Anki search integration
 
-## 👨‍💻 Author
-
-**Abdalrahman Mahrat**
-- Medical Intern at Cairo University
-- From Syria, currently in Cairo, Egypt
-- USMLE Journey: Step 1 ✅ | Step 2 📚
-- Interested in Internal Medicine and Radiology
-- GitHub: [@abdmohrat](https://github.com/abdmohrat)
-- AnkiWeb: [Profile](https://ankiweb.net/shared/by-author/699193084)
-- Ko-fi: [Support me](https://ko-fi.com/abdmohrat) ☕
-
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
