@@ -8,16 +8,7 @@ Convert USMLE question IDs to Anki search queries instantly! Perfect for medical
 
 ## 📺 Demo Video
 
-<div align="center">
-  <a href="https://youtu.be/t76nIJ1L7IA">
-    <img src="https://img.youtube.com/vi/t76nIJ1L7IA/maxresdefault.jpg" alt="Watch the demo" style="width:100%;max-width:800px;">
-  </a>
-  <p><em>👆 Click to watch: Complete workflow from USMLEPREPS to Anki!</em></p>
-</div>
-
-
 https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
-
 
 **Complete workflow:** Copy question IDs from USMLEPREPS → Paste in addon → Search in Anki!
 
@@ -81,14 +72,10 @@ https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
 **Input:** `21656, 19263, 4466, 12477`
 
 **Step 2 Output:**
-```
 tag:#AK_Step2_v12::#UWorld::Step::21656 OR tag:#AK_Step2_v12::#UWorld::Step::19263 OR tag:#AK_Step2_v12::#UWorld::Step::4466 OR tag:#AK_Step2_v12::#UWorld::Step::12477
-```
 
 **Step 3 Output:**
-```
 tag:#AK_Step3_v12::#UWorld::21656 OR tag:#AK_Step3_v12::#UWorld::19263 OR tag:#AK_Step3_v12::#UWorld::4466 OR tag:#AK_Step3_v12::#UWorld::12477
-```
 
 ## 🎯 Perfect For
 
