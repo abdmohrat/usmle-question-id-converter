@@ -8,12 +8,12 @@ Convert USMLE question IDs to Anki search queries instantly! Perfect for medical
 
 ## 🚀 Features
 
-- ✅ **Step 1 & Step 2 Support**: Choose between USMLE Step 1 or Step 2 tags
-- ✅ **Smart Memory**: Remembers your last step selection  
-- ✅ **Auto-conversion**: Converts IDs as you type
-- ✅ **Multiple Actions**: Copy to clipboard or search directly in Anki
-- ✅ **Clean Interface**: Simple, intuitive design
-- ✅ **Error Handling**: Filters out invalid characters automatically
+- ✅ **Step 1, Step 2 & Step 3 Support** - Choose between USMLE Step 1, Step 2, or Step 3 tags
+- ✅ **Smart Memory** - Remembers your last step selection  
+- ✅ **Auto-conversion** - Converts IDs as you type
+- ✅ **Multiple Actions** - Copy to clipboard or search directly in Anki
+- ✅ **Clean Interface** - Simple, intuitive design
+- ✅ **Error Handling** - Filters out invalid characters automatically
 
 ## ⚠️ Requirements
 
@@ -31,7 +31,7 @@ Convert USMLE question IDs to Anki search queries instantly! Perfect for medical
 ## 🔧 Usage
 
 1. **Open the converter**: Tools → USMLE Question ID Converter
-2. **Select your step**: Choose Step 1 or Step 2 (saved for next time)
+2. **Select your step**: Choose Step 1, Step 2, or Step 3 (saved for next time)
 3. **Paste question IDs**: Enter comma-separated IDs from your study platform
 4. **Get results**: Copy the search query or search directly in Anki
 
@@ -43,11 +43,16 @@ Convert USMLE question IDs to Anki search queries instantly! Perfect for medical
 tag:#AK_Step2_v12::#UWorld::Step::21656 OR tag:#AK_Step2_v12::#UWorld::Step::19263 OR tag:#AK_Step2_v12::#UWorld::Step::4466 OR tag:#AK_Step2_v12::#UWorld::Step::12477
 ```
 
+**Step 3 Output:**
+```
+tag:#AK_Step3_v12::#UWorld::21656 OR tag:#AK_Step3_v12::#UWorld::19263 OR tag:#AK_Step3_v12::#UWorld::4466 OR tag:#AK_Step3_v12::#UWorld::12477
+```
+
 ## 🎯 Perfect For
 
 - Medical students using the **AnKing_v12** deck
 - **UWorld** question bank integration
-- **Step 1** and **Step 2** preparation
+- **Step 1, Step 2, and Step 3** preparation
 - Quick access to specific question cards in Anki
 
 ## 🐛 Bug Reports & Feature Requests
@@ -56,14 +61,29 @@ Found a bug or have a suggestion? Please [open an issue](https://github.com/abdm
 
 ## 📝 Changelog
 
+### v1.1.0 (Latest)
+- ✨ Added Step 3 support
+- 🎯 Now supports all three USMLE steps
+- 💾 Remembers Step 3 selection
+
+### v1.0.2
+- 🎨 Redesigned support button: "☕ Buy Me a Coffee"
+- ⭐ Added "Rate Addon" button
+- ✨ Beautiful hover and press effects on buttons
+- 🐛 Fixed support button not opening browser
+
+### v1.0.1
+- ✨ Added Ko-fi support button
+- 🎨 Improved dialog layout
+- 💙 Support development directly from addon
+
 ### v1.0.0 (Initial Release)
-- Convert question IDs to Anki search queries
-- Support for Step 1 and Step 2
-- Memory feature for step selection
-- Auto-conversion as you type
-- Copy to clipboard functionality
-- Direct Anki search integration
-- Works with AnKing_v12 deck structure
+- 🚀 Convert question IDs to Anki search queries
+- ⚡ Support for Step 1 and Step 2
+- 💾 Memory feature for step selection
+- ⌨️ Auto-conversion as you type
+- 📋 Copy to clipboard functionality
+- 🔍 Direct Anki search integration
 
 ## 👨‍💻 Author
 
@@ -87,7 +107,7 @@ Contributions are welcome! Feel free to:
 
 If this addon helped you with your USMLE studies, consider:
 - ⭐ **Starring this repository**
-- 📝 **Rating it on [AnkiWeb](https://ankiweb.net/shared/info/699193084)**
+- 📝 **[Rating it on AnkiWeb](https://ankiweb.net/shared/review/699193084)**
 - ☕ **[Buying me a coffee](https://ko-fi.com/abdmohrat)** to support development
 - 🐛 **Reporting bugs or suggesting features**
 - 📢 **Sharing with fellow medical students**
