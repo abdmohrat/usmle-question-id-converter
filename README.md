@@ -6,6 +6,14 @@
 
 Convert USMLE question IDs to Anki search queries instantly! Perfect for medical students using UWorld question banks with the **AnKing_v12 deck** from AnkiHub.
 
+## 📺 Demo Video
+
+Watch how to use the addon with USMLEPREPS:
+
+[![Demo Video](https://img.youtube.com/vi/t76nIJ1L7IA/maxresdefault.jpg)](https://youtu.be/t76nIJ1L7IA)
+
+**Complete workflow:** Copy question IDs from USMLEPREPS → Paste in addon → Search in Anki!
+
 ## 🚀 Features
 
 - ✅ **Step 1, Step 2 & Step 3 Support** - Choose between USMLE Step 1, Step 2, or Step 3 tags
@@ -14,6 +22,16 @@ Convert USMLE question IDs to Anki search queries instantly! Perfect for medical
 - ✅ **Multiple Actions** - Copy to clipboard or search directly in Anki
 - ✅ **Clean Interface** - Simple, intuitive design
 - ✅ **Error Handling** - Filters out invalid characters automatically
+
+## 📸 Screenshots
+
+### Main Interface
+![Main Interface](images/main-interface.png)
+*Convert multiple question IDs at once - auto-conversion as you type*
+
+### Search Results in Anki
+![Anki Browser Results](images/anki-browser-results.png)
+*One-click search opens Anki browser with your target questions*
 
 ## ⚠️ Requirements
 
@@ -29,6 +47,23 @@ Convert USMLE question IDs to Anki search queries instantly! Perfect for medical
 3. Restart Anki
 
 ## 🔧 Usage
+
+### Quick Start with USMLEPREPS
+
+1. **In USMLEPREPS**: 
+   - Go to "My Tests"
+   - Click the 3-dot menu (⋮) on your test
+   - Select "Share Test"
+   - Click "Copy All IDs"
+
+2. **In Anki**:
+   - Open: Tools → USMLE Question ID Converter
+   - Select your step (Step 1, 2, or 3)
+   - Paste the IDs (Ctrl+V / Cmd+V)
+   - Click "Search in Anki"
+   - Done! 🎉
+
+### Manual Usage
 
 1. **Open the converter**: Tools → USMLE Question ID Converter
 2. **Select your step**: Choose Step 1, Step 2, or Step 3 (saved for next time)
@@ -51,7 +86,8 @@ tag:#AK_Step3_v12::#UWorld::21656 OR tag:#AK_Step3_v12::#UWorld::19263 OR tag:#A
 ## 🎯 Perfect For
 
 - Medical students using the **AnKing_v12** deck
-- **UWorld** question bank integration
+- **USMLEPREPS** users who want quick Anki integration
+- **UWorld** question bank review
 - **Step 1, Step 2, and Step 3** preparation
 - Quick access to specific question cards in Anki
 
@@ -61,7 +97,13 @@ Found a bug or have a suggestion? Please [open an issue](https://github.com/abdm
 
 ## 📝 Changelog
 
-### v1.1.0 (Latest)
+### v1.1.1 (Latest)
+- 🐛 Fixed Rate Addon button not opening review page
+- 🎨 Moved support buttons to top-right corner for better layout
+- 📏 Increased button widths to prevent text cutoff
+- 📐 Improved dialog size (800x480) for better spacing
+
+### v1.1.0
 - ✨ Added Step 3 support
 - 🎯 Now supports all three USMLE steps
 - 💾 Remembers Step 3 selection
@@ -87,7 +129,11 @@ Found a bug or have a suggestion? Please [open an issue](https://github.com/abdm
 
 ## 👨‍💻 Author
 
-**abdmohrat**
+**Abdalrahman Mahrat**
+- Medical Intern at Cairo University
+- From Syria, currently in Cairo, Egypt
+- USMLE Journey: Step 1 ✅ | Step 2 📚
+- Interested in Internal Medicine and Radiology
 - GitHub: [@abdmohrat](https://github.com/abdmohrat)
 - AnkiWeb: [Profile](https://ankiweb.net/shared/by-author/699193084)
 - Ko-fi: [Support me](https://ko-fi.com/abdmohrat) ☕
