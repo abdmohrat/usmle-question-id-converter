@@ -82,6 +82,7 @@ def show_converter_dialog():
             background-color: #127096;
         }
     """)
+    support_btn.clicked.connect(lambda: openLink("https://ko-fi.com/abdmohrat"))
     
     # Review button
     review_btn = QPushButton("⭐ Rate Addon")
@@ -102,6 +103,7 @@ def show_converter_dialog():
             background-color: #e67e00;
         }
     """)
+    review_btn.clicked.connect(lambda: openLink("https://ankiweb.net/shared/review/699193084"))
     
     top_bar.addWidget(support_btn)
     top_bar.addSpacing(10)
@@ -253,21 +255,11 @@ def show_converter_dialog():
         save_step_preference()
         dialog.close()
     
-    def support_clicked():
-        """Open Ko-fi support page"""
-        openLink("https://ko-fi.com/abdmohrat")
-    
-    def review_clicked():
-        """Open AnkiWeb review page"""
-        openLink("https://ankiweb.net/shared/review/699193084")
-    
-    # Connect buttons
+    # Connect main action buttons
     convert_btn.clicked.connect(convert_clicked)
     copy_btn.clicked.connect(copy_clicked)
     search_btn.clicked.connect(search_clicked)
     close_btn.clicked.connect(close_clicked)
-    support_btn.clicked.connect(support_clicked)
-    review_btn.clicked.connect(review_clicked)
     
     # Connect radio buttons
     step1_radio.toggled.connect(update_step_label)
