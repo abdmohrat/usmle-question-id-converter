@@ -10,7 +10,7 @@ Convert USMLE question IDs to Anki search queries instantly! Perfect for medical
 
 Watch how to use the addon with USMLEPREPS:
 
-[![Demo Video](https://img.youtube.com/vi/t76nIJ1L7IA/maxresdefault.jpg)](https://youtu.be/t76nIJ1L7IA)
+[![Demo Video](https://img.youtube.com/vi/t76nIJ1L7IA/0.jpg)](https://youtu.be/t76nIJ1L7IA)
 
 **Complete workflow:** Copy question IDs from USMLEPREPS → Paste in addon → Search in Anki!
 
