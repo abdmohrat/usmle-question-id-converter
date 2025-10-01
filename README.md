@@ -46,7 +46,8 @@ https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
 ## 📸 Screenshots
 
 ### Main Interface
-![Main Interface](images/main-interface.png)
+![Main Interface](<img width="1065" height="730" alt="image" src="https://github.com/user-attachments/assets/3be532c4-94d4-4b2c-8995-54ea55c59e52" />
+)
 *Convert multiple question IDs at once - auto-conversion as you type*
 
 ### Search Results in Anki
