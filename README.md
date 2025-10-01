@@ -157,7 +157,7 @@ tag:#MyDeck::Q21656 OR tag:#MyDeck::Q19263 OR tag:#MyDeck::Q4466
 
 - Medical students using the **AnKing_v12** deck
 - **USMLEPREPS** users who want quick Anki integration
-- **UWorld** question bank review
+- **UWorld** question bank Users
 - **Step 1, Step 2, and Step 3** preparation
 - **Custom decks** with personalized tag patterns
 - **Batch processing** weekly review lists
@@ -237,14 +237,7 @@ If this addon helped you with your USMLE studies, consider:
 
 Thanks to:
 - The AnKing team for their amazing AnKing_v12 deck
-- USMLEPREPS for the excellent question bank platform
 - The medical student community for feedback and support
-
-## 📞 Contact
-
-- **GitHub**: [@abdmohrat](https://github.com/abdmohrat)
-- **Ko-fi**: [abdmohrat](https://ko-fi.com/abdmohrat)
-- **Issues**: [GitHub Issues](https://github.com/abdmohrat/usmle-question-id-converter/issues)
 
 ---
 
