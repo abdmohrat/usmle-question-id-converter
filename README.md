@@ -49,7 +49,7 @@ https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
 ## 📸 Screenshots
 
 ### Main Interface
-![Main Interface](images/main-interface.png)
+![Main Interface](images/main-interface2.png)
 *Convert question IDs from UWorld, AMBOSS, or COMLEX*
 
 ### Search Results in Anki
