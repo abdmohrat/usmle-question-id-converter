@@ -9,7 +9,7 @@ Convert question IDs from **UWorld**, **AMBOSS**, and **COMLEX** to Anki search 
 
 ## 📺 Demo Video
 
-https://github.com/user-attachments/assets/e79975d4-afe7-4559-91d4-fc0717b60e52
+https://github.com/user-attachments/assets/f5e05a6e-26f7-430f-abbb-bb31ece9b53c
 
 **Complete workflow:** Copy question IDs from your question bank → Paste in addon → Search in Anki!
 
