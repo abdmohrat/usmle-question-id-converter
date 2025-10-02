@@ -1,53 +1,56 @@
-# USMLE Question ID Converter
+# UWorld AMBOSS COMLEX - Question ID Converter
 
 [![AnkiWeb](https://img.shields.io/badge/AnkiWeb-699193084-blue)](https://ankiweb.net/shared/info/699193084)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-1.2.1-green)](https://github.com/abdmohrat/usmle-question-id-converter/releases)
+[![Version](https://img.shields.io/badge/version-1.3.0-green)](https://github.com/abdmohrat/usmle-question-id-converter/releases)
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/abdmohrat)
 
-Convert USMLE question IDs to Anki search queries instantly! Perfect for medical students using UWorld question banks with the **AnKing_v12 deck** from AnkiHub.
+Convert question IDs from **UWorld**, **AMBOSS**, and **COMLEX** to Anki search queries instantly! Perfect for medical students using the **AnKing_v12 deck** from AnkiHub. Also supports USMLEPREPS, Coursology, and other question banks via custom patterns.
 
 ## 📺 Demo Video
 
 https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
 
-**Complete workflow:** Copy question IDs from USMLEPREPS → Paste in addon → Search in Anki!
+**Complete workflow:** Copy question IDs from your question bank → Paste in addon → Search in Anki!
 
-## 🎉 What's New in v1.2.1
+## 🎉 What's New in v1.3.0
 
-### Major Update with 5 New Features!
+### Multi-Question Bank Support!
 
-- 🎉 **Batch Processing** - Load question IDs from text/CSV files
-- 📋 **Quick Actions** - Right-click cards in Anki Browser to extract question IDs
-- ⚙️ **Custom Patterns** - Define your own tag patterns for any deck structure
-- 🧠 **Smart Input** - Accepts IDs in any format (comma, space, newline, tab)
-- 📊 **History Tracker** - View your last 20 conversions with timestamps
-- 🎨 **Dark Mode Support** - Perfect visibility in both light and dark themes
+- 🏥 **UWorld Support** - Full Step 1, 2, and 3 coverage
+- 🎓 **AMBOSS Support** - Step 1 and 2 with alphanumeric IDs
+- 🏥 **COMLEX Support** - Step 1 and 2 for osteopathic medicine
+- 🔄 **Smart Bank Detection** - Automatically handles different ID formats
+- 💾 **Bank Memory** - Remembers your last selected question bank
+- ⚙️ **Custom Patterns** - Support for USMLEPREPS, Coursology, and any deck!
 
 ## 🚀 Features
 
 ### Core Features
-- ✅ **Step 1, Step 2 & Step 3 Support** - Choose between USMLE Step 1, Step 2, or Step 3 tags
-- ✅ **Smart Memory** - Remembers your last step selection  
+- ✅ **3 Question Banks** - UWorld, AMBOSS, and COMLEX built-in
+- ✅ **Step 1, 2 & 3 Support** - Full USMLE step coverage (where available)
+- ✅ **Smart ID Recognition** - Handles numeric (UWorld/COMLEX) and alphanumeric (AMBOSS) IDs
+- ✅ **Smart Memory** - Remembers your last bank and step selection  
 - ✅ **Auto-conversion** - Converts IDs as you type
 - ✅ **Multiple Actions** - Copy to clipboard or search directly in Anki
 - ✅ **Clean Interface** - Simple, intuitive design
 - ✅ **Error Handling** - Filters out invalid characters automatically
 
-### New in v1.2.0+
+### Advanced Features (v1.2.0+)
 - 📁 **File Import** - Load IDs from .txt or .csv files for batch processing
-- 🎯 **Browser Context Menu** - Right-click on UWorld cards to extract question IDs
-- ⚙️ **Custom Tag Patterns** - Use with any deck, not just AnKing_v12!
+- 🎯 **Browser Context Menu** - Right-click on question bank cards to extract IDs
+- ⚙️ **Custom Tag Patterns** - Configure for USMLEPREPS, Coursology, or any deck!
 - 🔄 **Flexible Input** - Paste IDs in any format: comma, space, newline, or tab-separated
 - 📊 **Conversion History** - Track your last 20 conversions with dates and counts
 - 📈 **Live Stats** - See ID count in real-time as you type
-- ✨ **Enhanced UI** - Larger dialog (850x550) with better visual feedback
+- ✨ **Enhanced UI** - Larger dialog (850x600) with better visual feedback
+- 🎨 **Dark Mode Support** - Perfect visibility in both light and dark themes
 
 ## 📸 Screenshots
 
 ### Main Interface
 ![Main Interface](images/main-interface.png)
-*Convert multiple question IDs at once - auto-conversion as you type*
+*Convert question IDs from UWorld, AMBOSS, or COMLEX*
 
 ### Search Results in Anki
 ![Anki Browser Results](images/anki-browser-results.png)
@@ -68,98 +71,118 @@ https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
 
 ## 🔧 Usage
 
-### Quick Start with USMLEPREPS
+### Quick Start with Question Banks
 
-1. **In USMLEPREPS**: 
-   - Go to "My Tests"
-   - Click the 3-dot menu (⋮) on your test
-   - Select "Share Test"
-   - Click "Copy All IDs"
+#### UWorld
+1. Copy your question IDs (numeric format: 21656, 19263, 4466)
+2. Open: Tools → UWorld AMBOSS COMLEX - Question ID Converter
+3. Select "UWorld" and your step
+4. Paste the IDs
+5. Click "Search in Anki" - Done! 🎉
 
-2. **In Anki**:
-   - Open: Tools → USMLE Question ID Converter
-   - Select your step (Step 1, 2, or 3)
-   - Paste the IDs (Ctrl+V / Cmd+V) - any format works!
-   - Click "Search in Anki"
-   - Done! 🎉
+#### AMBOSS
+1. Copy your AMBOSS IDs (alphanumeric: -aaDMQ, 0jae_4, 3_0SLi)
+2. Open the converter
+3. Select "AMBOSS" and your step (1 or 2)
+4. Paste the IDs
+5. Click "Search in Anki" - Done! 🎉
+
+#### COMLEX
+1. Copy your COMLEX question IDs (numeric: 106228, 100004)
+2. Open the converter
+3. Select "COMLEX" and your step (1 or 2)
+4. Paste the IDs
+5. Click "Search in Anki" - Done! 🎉
+
+### USMLEPREPS Integration
+
+**In USMLEPREPS**: 
+- Go to "My Tests"
+- Click the 3-dot menu (⋮) on your test
+- Select "Share Test"
+- Click "Copy All IDs"
+
+**In Anki**:
+- Open the converter
+- Select UWorld (USMLEPREPS uses UWorld format)
+- Paste and search!
 
 ### Manual Usage
 
-1. **Open the converter**: Tools → USMLE Question ID Converter
-2. **Select your step**: Choose Step 1, Step 2, or Step 3 (saved for next time)
-3. **Input IDs** (choose one):
+1. **Open the converter**: Tools → UWorld AMBOSS COMLEX - Question ID Converter
+2. **Select your question bank**: UWorld, AMBOSS, or COMLEX
+3. **Select your step**: Choose Step 1, 2, or 3 (saved for next time)
+4. **Input IDs** (choose one):
    - Paste directly (comma, space, or newline-separated)
    - Click "📁 Load from File" to import from .txt or .csv
-4. **Get results**: Copy the search query or search directly in Anki
-
-### New Features Guide
-
-#### 📁 Batch Processing
-1. Create a text file with your IDs (any format)
-2. Click "📁 Load from File"
-3. Select your file
-4. IDs automatically load and convert!
-
-#### 📋 Extract IDs from Cards
-1. Open Anki Browser
-2. Select UWorld cards
-3. Right-click → "📋 Copy UWorld Question ID(s)"
-4. IDs copied to clipboard!
-
-#### ⚙️ Custom Tag Patterns
-1. Click "⚙️ Custom Patterns"
-2. Define your pattern: `tag:#MyDeck::#UWorld::{ID}`
-3. Test with sample ID
-4. Save and use with any deck!
-
-#### 📊 View History
-1. Click "📊 History"
-2. See all your past conversions
-3. Review timestamps and counts
-4. Clear history anytime
+5. **Get results**: Copy the search query or search directly in Anki
 
 ### Input Format Examples
 
-The addon now accepts **any format**:
+The addon accepts **any format**:
 
+**UWorld/COMLEX (numeric):**
 ```
 Comma-separated:    21656, 19263, 4466
 Space-separated:    21656 19263 4466
 Newline-separated:  21656
                     19263
                     4466
-Tab-separated:      21656	19263	4466
 Mixed format:       21656, 19263
                     4466
-                    12477    4288
+```
+
+**AMBOSS (alphanumeric):**
+```
+Comma-separated:    -aaDMQ, 0jae_4, 3_0SLi
+Space-separated:    -aaDMQ 0jae_4 3_0SLi
+Newline-separated:  -aaDMQ
+                    0jae_4
+                    3_0SLi
 ```
 
 All formats work perfectly! 🎉
 
 ### Output Examples
 
-**Step 2 Output:**
+**UWorld Step 2:**
 ```
-tag:#AK_Step2_v12::#UWorld::Step::21656 OR tag:#AK_Step2_v12::#UWorld::Step::19263 OR tag:#AK_Step2_v12::#UWorld::Step::4466
-```
-
-**Step 3 Output:**
-```
-tag:#AK_Step3_v12::#UWorld::21656 OR tag:#AK_Step3_v12::#UWorld::19263 OR tag:#AK_Step3_v12::#UWorld::4466
+tag:#AK_Step2_v12::#UWorld::Step::21656 OR tag:#AK_Step2_v12::#UWorld::Step::19263
 ```
 
-**Custom Pattern Output** (example):
+**AMBOSS Step 1:**
 ```
-tag:#MyDeck::Q21656 OR tag:#MyDeck::Q19263 OR tag:#MyDeck::Q4466
+tag:#AK_Step1_v12::#AMBOSS::-aaDMQ OR tag:#AK_Step1_v12::#AMBOSS::0jae_4
 ```
+
+**COMLEX Step 1:**
+```
+tag:#AK_Step1_v12::#UWorld::COMLEX::106228 OR tag:#AK_Step1_v12::#UWorld::COMLEX::100004
+```
+
+**UWorld Step 3:**
+```
+tag:#AK_Step3_v12::#UWorld::21656 OR tag:#AK_Step3_v12::#UWorld::19263
+```
+
+### Custom Patterns for Other Question Banks
+
+Want to use with **USMLEPREPS**, **Coursology**, or another deck?
+
+1. Click "⚙️ Custom Patterns"
+2. Select the appropriate bank tab
+3. Define your pattern: `tag:#YourDeck::#YourBank::{ID}`
+4. Test with a sample ID
+5. Save and use!
 
 ## 🎯 Perfect For
 
-- Medical students using the **AnKing_v12** deck
+- **UWorld** users preparing for USMLE Steps 1, 2, 3
+- **AMBOSS** users studying for Step 1 and 2
+- **COMLEX** students using UWorld question bank
 - **USMLEPREPS** users who want quick Anki integration
-- **UWorld** question bank review
-- **Step 1, Step 2, and Step 3** preparation
-- **Custom decks** with personalized tag patterns
+- **Coursology** and other question bank users (via custom patterns)
+- Medical students using the **AnKing_v12** deck
 - **Batch processing** weekly review lists
 - Quick access to specific question cards in Anki
 
@@ -169,49 +192,47 @@ Found a bug or have a suggestion? Please [open an issue](https://github.com/abdm
 
 ## 📝 Changelog
 
-### v1.2.1 (Latest - October 2025)
+### v1.3.0 (Latest - October 2025)
+- 🏥 **Multi-Bank Support**: Added AMBOSS and COMLEX support
+- 🔄 **Smart ID Detection**: Handles both numeric and alphanumeric IDs
+- 💾 **Bank Memory**: Remembers last selected question bank
+- 🎯 **Dynamic UI**: Step 3 auto-disables for AMBOSS/COMLEX
+- ⚙️ **Enhanced Custom Patterns**: Bank-specific pattern configuration
+- 📊 **History Update**: Added bank column to conversion history
+- 🔍 **Browser Integration**: Extracts IDs from all supported banks
+- ✨ **Better Title**: Renamed to emphasize multi-bank support
+
+### v1.2.1
 - 🎨 Fixed Custom Patterns test result visibility in dark mode
 - ✨ Test result box now adapts to Anki's theme automatically
 
-### v1.2.0 (Major Update - October 2025)
+### v1.2.0 (Major Update)
 - 🎉 **Batch Processing**: Load question IDs from text/CSV files
 - 📋 **Quick Actions**: Right-click cards in browser to extract question IDs
 - ⚙️ **Custom Patterns**: Define your own tag patterns for any deck
 - 🧠 **Smart Input**: Accepts IDs in any format (comma, space, newline, tab)
 - 📊 **History Tracker**: View your last 20 conversions with timestamps
 - ✨ **Better UI**: Live ID counter, status messages, improved layout
-- 🚀 **Dialog Size**: Increased to 850x550 for better workflow
-- 💾 **New Config**: Stores custom patterns and conversion history
+- 🚀 **Dialog Size**: Increased to 850x600 for better workflow
 
 ### v1.1.1
-- 🐛 Fixed Rate Addon button not opening review page
-- 🎨 Moved support buttons to top-right corner for better layout
-- 📏 Increased button widths to prevent text cutoff
-- 📐 Improved dialog size (800x480) for better spacing
+- 🐛 Fixed Rate Addon button
+- 🎨 Improved layout
 
 ### v1.1.0
 - ✨ Added Step 3 support
-- 🎯 Now supports all three USMLE steps
-- 💾 Remembers Step 3 selection
 
 ### v1.0.2
-- 🎨 Redesigned support button: "☕ Buy Me a Coffee"
+- 🎨 Redesigned support button
 - ⭐ Added "Rate Addon" button
-- ✨ Beautiful hover and press effects on buttons
-- 🐛 Fixed support button not opening browser
 
 ### v1.0.1
 - ✨ Added Ko-fi support button
-- 🎨 Improved dialog layout
-- 💙 Support development directly from addon
 
 ### v1.0.0 (Initial Release)
 - 🚀 Convert question IDs to Anki search queries
-- ⚡ Support for Step 1 and Step 2
+- ⚡ Support for Step 1 and 2
 - 💾 Memory feature for step selection
-- ⌨️ Auto-conversion as you type
-- 📋 Copy to clipboard functionality
-- 🔍 Direct Anki search integration
 
 ## 📄 License
 
@@ -226,7 +247,7 @@ Contributions are welcome! Feel free to:
 
 ## 💝 Support
 
-If this addon helped you with your USMLE studies, consider:
+If this addon helped you with your medical studies, consider:
 - ⭐ **Starring this repository**
 - 📝 **[Rating it on AnkiWeb](https://ankiweb.net/shared/review/699193084)**
 - ☕ **[Buying me a coffee](https://ko-fi.com/abdmohrat)** to support development
@@ -237,14 +258,8 @@ If this addon helped you with your USMLE studies, consider:
 
 Thanks to:
 - The AnKing team for their amazing AnKing_v12 deck
-- USMLEPREPS for the excellent question bank platform
+- UWorld, AMBOSS, and COMLEX for their excellent question banks
 - The medical student community for feedback and support
-
-## 📞 Contact
-
-- **GitHub**: [@abdmohrat](https://github.com/abdmohrat)
-- **Ko-fi**: [abdmohrat](https://ko-fi.com/abdmohrat)
-- **Issues**: [GitHub Issues](https://github.com/abdmohrat/usmle-question-id-converter/issues)
 
 ---
 

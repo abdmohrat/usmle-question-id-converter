@@ -1,6 +1,6 @@
-# USMLE Question ID Converter Addon for Anki
+# UWorld AMBOSS COMLEX - Question ID Converter for Anki
 # Author: abdmohrat
-# Version: 1.2.1
+# Version: 1.3.0
 
 from aqt import mw, gui_hooks
 from aqt.qt import *
@@ -19,9 +19,14 @@ def get_config():
     if config is None:
         config = {
             "last_selected_step": "Step2",
+            "last_selected_bank": "UWorld",
             "custom_patterns": {},
             "conversion_history": []
         }
+        mw.addonManager.writeConfig(__name__, config)
+    # Ensure last_selected_bank exists for older configs
+    if "last_selected_bank" not in config:
+        config["last_selected_bank"] = "UWorld"
         mw.addonManager.writeConfig(__name__, config)
     return config
 
@@ -29,7 +34,7 @@ def save_config(config):
     """Save addon configuration"""
     mw.addonManager.writeConfig(__name__, config)
 
-def clean_and_extract_ids(text):
+def clean_and_extract_ids(text, bank="UWorld"):
     """
     Extract IDs from text with support for multiple formats:
     - Comma-separated: 1234, 5678, 9012
@@ -37,49 +42,87 @@ def clean_and_extract_ids(text):
     - Newline-separated: one ID per line
     - Tab-separated: 1234\t5678\t9012
     - Mixed formats
+    
+    For AMBOSS, supports alphanumeric IDs with hyphens and underscores:
+    - -aaDMQ, 0jae_4, 3_0SLi
     """
     # Replace all separators (comma, space, tab, newline) with a single separator
-    # This handles all formats: "1,2,3", "1 2 3", "1\n2\n3", "1\t2\t3", or mixed
     text = re.sub(r'[,\s\t\n]+', ',', text)
     
-    # Split by comma and extract only numeric parts
+    # Split by comma and extract IDs based on bank type
     ids = []
     for item in text.split(','):
-        # Extract all digits from each item
-        clean_id = re.sub(r'\D', '', item.strip())
+        item = item.strip()
+        if not item:
+            continue
+            
+        if bank == "AMBOSS":
+            # AMBOSS: Keep alphanumeric, hyphens, and underscores
+            clean_id = re.sub(r'[^a-zA-Z0-9\-_]', '', item)
+        else:
+            # UWorld, COMLEX: Only digits
+            clean_id = re.sub(r'\D', '', item)
+        
         if clean_id:  # Only add if we have a valid ID
             ids.append(clean_id)
     
     return ids
 
-def get_tag_pattern(step_type, custom_patterns=None):
+def get_tag_pattern(step_type, bank="UWorld", custom_patterns=None):
     """
-    Get the tag pattern for a specific step type
+    Get the tag pattern for a specific step type and question bank
     Supports custom patterns defined by user
-    """
-    if custom_patterns and step_type in custom_patterns:
-        return custom_patterns[step_type]
     
-    # Default patterns
-    if step_type == "Step1":
-        return "tag:#AK_Step1_v12::#UWorld::Step::{ID}"
-    elif step_type == "Step3":
-        return "tag:#AK_Step3_v12::#UWorld::{ID}"
-    else:  # Step2 (default)
-        return "tag:#AK_Step2_v12::#UWorld::Step::{ID}"
+    Banks: UWorld, AMBOSS, COMLEX
+    """
+    # Check for custom patterns first
+    pattern_key = f"{bank}_{step_type}"
+    if custom_patterns and pattern_key in custom_patterns:
+        return custom_patterns[pattern_key]
+    
+    # Default patterns by bank
+    if bank == "AMBOSS":
+        if step_type == "Step1":
+            return "tag:#AK_Step1_v12::#AMBOSS::{ID}"
+        elif step_type == "Step2":
+            return "tag:#AK_Step2_v12::#AMBOSS::{ID}"
+        else:
+            # Step 3 not supported for AMBOSS
+            return None
+    
+    elif bank == "COMLEX":
+        if step_type == "Step1":
+            return "tag:#AK_Step1_v12::#UWorld::COMLEX::{ID}"
+        elif step_type == "Step2":
+            return "tag:#AK_Step2_v12::#UWorld::COMLEX::{ID}"
+        else:
+            # Step 3 not supported for COMLEX
+            return None
+    
+    else:  # UWorld (default)
+        if step_type == "Step1":
+            return "tag:#AK_Step1_v12::#UWorld::Step::{ID}"
+        elif step_type == "Step3":
+            return "tag:#AK_Step3_v12::#UWorld::{ID}"
+        else:  # Step2 (default)
+            return "tag:#AK_Step2_v12::#UWorld::Step::{ID}"
 
-def convert_ids_to_tags(ids_text, step_type="Step2", custom_patterns=None):
+def convert_ids_to_tags(ids_text, step_type="Step2", bank="UWorld", custom_patterns=None):
     """
     Convert IDs to Anki search format with custom pattern support
+    Supports multiple question banks: UWorld, AMBOSS, COMLEX
     """
-    # Extract and clean IDs from text
-    ids = clean_and_extract_ids(ids_text)
+    # Extract and clean IDs from text (bank-aware)
+    ids = clean_and_extract_ids(ids_text, bank)
     
     if not ids:
         return ""
     
-    # Get the tag pattern for this step
-    tag_pattern = get_tag_pattern(step_type, custom_patterns)
+    # Get the tag pattern for this step and bank
+    tag_pattern = get_tag_pattern(step_type, bank, custom_patterns)
+    
+    if tag_pattern is None:
+        return ""
     
     # Convert each ID to the tag format
     tag_queries = []
@@ -91,7 +134,7 @@ def convert_ids_to_tags(ids_text, step_type="Step2", custom_patterns=None):
     # Join with OR
     return ' OR '.join(tag_queries)
 
-def add_to_history(ids_text, step_type, result_count):
+def add_to_history(ids_text, step_type, bank, result_count):
     """Add conversion to history"""
     config = get_config()
     history = config.get("conversion_history", [])
@@ -100,6 +143,7 @@ def add_to_history(ids_text, step_type, result_count):
     from datetime import datetime
     entry = {
         "timestamp": datetime.now().isoformat(),
+        "bank": bank,
         "step": step_type,
         "ids_preview": ids_text[:50] + "..." if len(ids_text) > 50 else ids_text,
         "count": result_count
@@ -117,13 +161,14 @@ def show_custom_pattern_dialog(parent):
     """Show dialog for configuring custom tag patterns"""
     dialog = QDialog(parent)
     dialog.setWindowTitle("Custom Tag Patterns")
-    dialog.setMinimumWidth(600)
+    dialog.setMinimumWidth(700)
     
     layout = QVBoxLayout()
     
     # Instructions
     instructions = QLabel("""
     Define custom tag patterns for your decks. Use {ID} as placeholder for question IDs.
+    Patterns are organized by Question Bank and Step.
     
     Examples:
     - tag:#MyDeck::#UWorld::{ID}
@@ -137,36 +182,78 @@ def show_custom_pattern_dialog(parent):
     config = get_config()
     custom_patterns = config.get("custom_patterns", {})
     
-    # Pattern inputs
-    patterns_group = QGroupBox("Tag Patterns:")
-    patterns_layout = QFormLayout()
+    # Pattern inputs organized by bank
+    tabs = QTabWidget()
     
-    step1_input = QLineEdit(custom_patterns.get("Step1", ""))
-    step1_input.setPlaceholderText("tag:#AK_Step1_v12::#UWorld::Step::{ID}")
-    patterns_layout.addRow("Step 1:", step1_input)
+    # UWorld Tab
+    uworld_widget = QWidget()
+    uworld_layout = QFormLayout()
     
-    step2_input = QLineEdit(custom_patterns.get("Step2", ""))
-    step2_input.setPlaceholderText("tag:#AK_Step2_v12::#UWorld::Step::{ID}")
-    patterns_layout.addRow("Step 2:", step2_input)
+    uworld_step1 = QLineEdit(custom_patterns.get("UWorld_Step1", ""))
+    uworld_step1.setPlaceholderText("tag:#AK_Step1_v12::#UWorld::Step::{ID}")
+    uworld_layout.addRow("Step 1:", uworld_step1)
     
-    step3_input = QLineEdit(custom_patterns.get("Step3", ""))
-    step3_input.setPlaceholderText("tag:#AK_Step3_v12::#UWorld::{ID}")
-    patterns_layout.addRow("Step 3:", step3_input)
+    uworld_step2 = QLineEdit(custom_patterns.get("UWorld_Step2", ""))
+    uworld_step2.setPlaceholderText("tag:#AK_Step2_v12::#UWorld::Step::{ID}")
+    uworld_layout.addRow("Step 2:", uworld_step2)
     
-    patterns_group.setLayout(patterns_layout)
-    layout.addWidget(patterns_group)
+    uworld_step3 = QLineEdit(custom_patterns.get("UWorld_Step3", ""))
+    uworld_step3.setPlaceholderText("tag:#AK_Step3_v12::#UWorld::{ID}")
+    uworld_layout.addRow("Step 3:", uworld_step3)
+    
+    uworld_widget.setLayout(uworld_layout)
+    tabs.addTab(uworld_widget, "UWorld")
+    
+    # AMBOSS Tab
+    amboss_widget = QWidget()
+    amboss_layout = QFormLayout()
+    
+    amboss_step1 = QLineEdit(custom_patterns.get("AMBOSS_Step1", ""))
+    amboss_step1.setPlaceholderText("tag:#AK_Step1_v12::#AMBOSS::{ID}")
+    amboss_layout.addRow("Step 1:", amboss_step1)
+    
+    amboss_step2 = QLineEdit(custom_patterns.get("AMBOSS_Step2", ""))
+    amboss_step2.setPlaceholderText("tag:#AK_Step2_v12::#AMBOSS::{ID}")
+    amboss_layout.addRow("Step 2:", amboss_step2)
+    
+    amboss_note = QLabel("Note: Step 3 not available for AMBOSS")
+    amboss_note.setStyleSheet("color: gray; font-style: italic;")
+    amboss_layout.addRow("", amboss_note)
+    
+    amboss_widget.setLayout(amboss_layout)
+    tabs.addTab(amboss_widget, "AMBOSS")
+    
+    # COMLEX Tab
+    comlex_widget = QWidget()
+    comlex_layout = QFormLayout()
+    
+    comlex_step1 = QLineEdit(custom_patterns.get("COMLEX_Step1", ""))
+    comlex_step1.setPlaceholderText("tag:#AK_Step1_v12::#UWorld::COMLEX::{ID}")
+    comlex_layout.addRow("Step 1:", comlex_step1)
+    
+    comlex_step2 = QLineEdit(custom_patterns.get("COMLEX_Step2", ""))
+    comlex_step2.setPlaceholderText("tag:#AK_Step2_v12::#UWorld::COMLEX::{ID}")
+    comlex_layout.addRow("Step 2:", comlex_step2)
+    
+    comlex_note = QLabel("Note: Step 3 not available for COMLEX")
+    comlex_note.setStyleSheet("color: gray; font-style: italic;")
+    comlex_layout.addRow("", comlex_note)
+    
+    comlex_widget.setLayout(comlex_layout)
+    tabs.addTab(comlex_widget, "COMLEX")
+    
+    layout.addWidget(tabs)
     
     # Test section
     test_group = QGroupBox("Test Pattern:")
     test_layout = QVBoxLayout()
     
     test_input = QLineEdit()
-    test_input.setPlaceholderText("Enter test ID (e.g., 12345)")
+    test_input.setPlaceholderText("Enter test ID (e.g., 12345 for UWorld/COMLEX or -aaDMQ for AMBOSS)")
     test_layout.addWidget(test_input)
     
     test_result = QLabel("")
     test_result.setWordWrap(True)
-    # Theme-aware styling - works in both light and dark mode
     test_result.setStyleSheet("""
         QLabel {
             padding: 10px;
@@ -195,30 +282,50 @@ def show_custom_pattern_dialog(parent):
     layout.addLayout(button_layout)
     dialog.setLayout(layout)
     
+    # Store all input fields
+    all_inputs = {
+        "UWorld_Step1": uworld_step1,
+        "UWorld_Step2": uworld_step2,
+        "UWorld_Step3": uworld_step3,
+        "AMBOSS_Step1": amboss_step1,
+        "AMBOSS_Step2": amboss_step2,
+        "COMLEX_Step1": comlex_step1,
+        "COMLEX_Step2": comlex_step2
+    }
+    
     def test_pattern():
         test_id = test_input.text().strip()
         if not test_id:
             test_result.setText("Enter a test ID to preview")
             return
         
-        # Test all three patterns
+        # Test patterns from current tab
+        current_tab_name = tabs.tabText(tabs.currentIndex())
         results = []
-        for step, input_field in [("Step1", step1_input), ("Step2", step2_input), ("Step3", step3_input)]:
-            pattern = input_field.text().strip()
-            if pattern:
-                result = pattern.replace("{ID}", test_id)
-                results.append(f"<b>{step}:</b> {result}")
-            else:
-                default = get_tag_pattern(step)
-                result = default.replace("{ID}", test_id)
-                results.append(f"<b>{step} (default):</b> {result}")
         
-        test_result.setText("<br>".join(results))
+        for key, input_field in all_inputs.items():
+            if key.startswith(current_tab_name):
+                pattern = input_field.text().strip()
+                step = key.split('_')[1]
+                
+                if pattern:
+                    result = pattern.replace("{ID}", test_id)
+                    results.append(f"<b>{step}:</b> {result}")
+                else:
+                    # Show default pattern
+                    default = get_tag_pattern(step, current_tab_name)
+                    if default:
+                        result = default.replace("{ID}", test_id)
+                        results.append(f"<b>{step} (default):</b> {result}")
+        
+        if results:
+            test_result.setText("<br>".join(results))
+        else:
+            test_result.setText("No patterns to test")
     
     def reset_patterns():
-        step1_input.clear()
-        step2_input.clear()
-        step3_input.clear()
+        for input_field in all_inputs.values():
+            input_field.clear()
         test_result.setText("Patterns reset to defaults")
     
     def save_patterns():
@@ -226,12 +333,9 @@ def show_custom_pattern_dialog(parent):
         
         # Save only non-empty patterns
         new_patterns = {}
-        if step1_input.text().strip():
-            new_patterns["Step1"] = step1_input.text().strip()
-        if step2_input.text().strip():
-            new_patterns["Step2"] = step2_input.text().strip()
-        if step3_input.text().strip():
-            new_patterns["Step3"] = step3_input.text().strip()
+        for key, input_field in all_inputs.items():
+            if input_field.text().strip():
+                new_patterns[key] = input_field.text().strip()
         
         config["custom_patterns"] = new_patterns
         save_config(config)
@@ -241,9 +345,10 @@ def show_custom_pattern_dialog(parent):
     
     # Connect signals
     test_input.textChanged.connect(lambda: test_pattern())
-    step1_input.textChanged.connect(lambda: test_pattern() if test_input.text().strip() else None)
-    step2_input.textChanged.connect(lambda: test_pattern() if test_input.text().strip() else None)
-    step3_input.textChanged.connect(lambda: test_pattern() if test_input.text().strip() else None)
+    tabs.currentChanged.connect(lambda: test_pattern() if test_input.text().strip() else None)
+    
+    for input_field in all_inputs.values():
+        input_field.textChanged.connect(lambda: test_pattern() if test_input.text().strip() else None)
     
     reset_btn.clicked.connect(reset_patterns)
     save_btn.clicked.connect(save_patterns)
@@ -288,8 +393,8 @@ def show_history_dialog(parent):
     
     # Create table
     table = QTableWidget()
-    table.setColumnCount(4)
-    table.setHorizontalHeaderLabels(["Time", "Step", "IDs Preview", "Count"])
+    table.setColumnCount(5)
+    table.setHorizontalHeaderLabels(["Time", "Bank", "Step", "IDs Preview", "Count"])
     table.setRowCount(len(history))
     table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
     table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -305,9 +410,10 @@ def show_history_dialog(parent):
             time_str = entry["timestamp"]
         
         table.setItem(i, 0, QTableWidgetItem(time_str))
-        table.setItem(i, 1, QTableWidgetItem(entry["step"]))
-        table.setItem(i, 2, QTableWidgetItem(entry["ids_preview"]))
-        table.setItem(i, 3, QTableWidgetItem(str(entry["count"])))
+        table.setItem(i, 1, QTableWidgetItem(entry.get("bank", "UWorld")))  # Default to UWorld for old entries
+        table.setItem(i, 2, QTableWidgetItem(entry["step"]))
+        table.setItem(i, 3, QTableWidgetItem(entry["ids_preview"]))
+        table.setItem(i, 4, QTableWidgetItem(str(entry["count"])))
     
     # Resize columns to content
     table.resizeColumnsToContents()
@@ -350,8 +456,8 @@ def show_converter_dialog():
     Show the main converter dialog
     """
     dialog = QDialog(mw)
-    dialog.setWindowTitle("USMLE Question ID Converter")
-    dialog.setFixedSize(850, 550)
+    dialog.setWindowTitle("UWorld AMBOSS COMLEX - Question ID Converter")
+    dialog.setFixedSize(850, 600)
     
     # Main layout
     main_layout = QVBoxLayout()
@@ -427,12 +533,35 @@ def show_converter_dialog():
     
     # Instructions
     instructions = QLabel("""
-    Paste your USMLE question IDs below (supports multiple formats):
-    • Comma-separated: 21656, 19263, 4466
-    • Space-separated: 21656 19263 4466
-    • One per line or any mix of formats
+    Paste your question IDs below (supports multiple formats):
+    • UWorld/COMLEX: Comma, space, or newline separated numbers (e.g., 21656, 19263)
+    • AMBOSS: Alphanumeric IDs with hyphens (e.g., -aaDMQ, 0jae_4, 3_0SLi)
     """)
     main_layout.addWidget(instructions)
+    
+    # Question Bank selection
+    bank_group = QGroupBox("Select Question Bank:")
+    bank_layout = QHBoxLayout()
+    
+    uworld_radio = QRadioButton("UWorld")
+    amboss_radio = QRadioButton("AMBOSS")
+    comlex_radio = QRadioButton("COMLEX")
+    
+    # Load saved preference
+    config = get_config()
+    last_bank = config.get("last_selected_bank", "UWorld")
+    if last_bank == "AMBOSS":
+        amboss_radio.setChecked(True)
+    elif last_bank == "COMLEX":
+        comlex_radio.setChecked(True)
+    else:
+        uworld_radio.setChecked(True)
+    
+    bank_layout.addWidget(uworld_radio)
+    bank_layout.addWidget(amboss_radio)
+    bank_layout.addWidget(comlex_radio)
+    bank_group.setLayout(bank_layout)
+    main_layout.addWidget(bank_group)
     
     # Step selection
     step_group = QGroupBox("Select USMLE Step:")
@@ -443,7 +572,6 @@ def show_converter_dialog():
     step3_radio = QRadioButton("Step 3")
     
     # Load saved preference
-    config = get_config()
     last_step = config.get("last_selected_step", "Step2")
     if last_step == "Step1":
         step1_radio.setChecked(True)
@@ -478,10 +606,43 @@ def show_converter_dialog():
     main_layout.addWidget(output_text)
     
     # Current selection display
-    initial_step = "Step 1" if step1_radio.isChecked() else ("Step 3" if step3_radio.isChecked() else "Step 2")
-    current_step_label = QLabel(f"Current selection: {initial_step} (remembered from last use)")
+    def get_bank_name():
+        if uworld_radio.isChecked():
+            return "UWorld"
+        elif amboss_radio.isChecked():
+            return "AMBOSS"
+        else:
+            return "COMLEX"
+    
+    def get_step_name():
+        if step1_radio.isChecked():
+            return "Step 1"
+        elif step3_radio.isChecked():
+            return "Step 3"
+        else:
+            return "Step 2"
+    
+    current_step_label = QLabel(f"Current selection: {get_bank_name()} - {get_step_name()}")
     current_step_label.setStyleSheet("color: blue; font-weight: bold;")
     main_layout.addWidget(current_step_label)
+    
+    # Function to update Step 3 availability
+    def update_step3_availability():
+        bank = get_bank_name()
+        if bank in ["AMBOSS", "COMLEX"]:
+            # Disable Step 3 for AMBOSS and COMLEX
+            step3_radio.setEnabled(False)
+            step3_radio.setToolTip("Step 3 not available for " + bank)
+            # If Step 3 was selected, switch to Step 2
+            if step3_radio.isChecked():
+                step2_radio.setChecked(True)
+        else:
+            # Enable Step 3 for UWorld
+            step3_radio.setEnabled(True)
+            step3_radio.setToolTip("")
+    
+    # Set initial Step 3 availability
+    update_step3_availability()
     
     # Bottom buttons
     button_layout = QHBoxLayout()
@@ -507,51 +668,79 @@ def show_converter_dialog():
         else:
             return "Step2"
     
-    def save_step_preference():
-        """Save the current step selection"""
+    def get_selected_bank():
+        if uworld_radio.isChecked():
+            return "UWorld"
+        elif amboss_radio.isChecked():
+            return "AMBOSS"
+        else:
+            return "COMLEX"
+    
+    def save_preferences():
+        """Save the current step and bank selection"""
         config = get_config()
         config["last_selected_step"] = get_selected_step()
+        config["last_selected_bank"] = get_selected_bank()
         save_config(config)
     
-    def update_step_label():
-        if step1_radio.isChecked():
-            step = "Step 1"
-        elif step3_radio.isChecked():
-            step = "Step 3"
-        else:
-            step = "Step 2"
-        current_step_label.setText(f"Current selection: {step}")
-        # Save preference when changed
-        save_step_preference()
-        # Auto-convert when step changes
+    def update_labels():
+        bank = get_bank_name()
+        step = get_step_name()
+        current_step_label.setText(f"Current selection: {bank} - {step}")
+        # Save preferences when changed
+        save_preferences()
+        # Update Step 3 availability
+        update_step3_availability()
+        # Auto-convert when selection changes (only if text exists)
         if input_text.toPlainText().strip():
-            convert_clicked()
+            convert_clicked(auto_convert=True)
     
-    def convert_clicked():
+    def convert_clicked(auto_convert=False):
         ids_text = input_text.toPlainText().strip()
         if not ids_text:
-            showInfo("Please enter some question IDs first.")
+            # Only show popup if manually clicked (not auto-convert)
+            if not auto_convert:
+                showInfo("Please enter some question IDs first.")
             return
         
         try:
             step_type = get_selected_step()
+            bank = get_selected_bank()
             config = get_config()
             custom_patterns = config.get("custom_patterns", {})
             
             # Convert using custom patterns if available
-            converted = convert_ids_to_tags(ids_text, step_type, custom_patterns)
+            converted = convert_ids_to_tags(ids_text, step_type, bank, custom_patterns)
+            
+            # Check if conversion failed (Step 3 not available or no valid IDs)
+            if not converted:
+                # Only show error for Step 3 unavailability if manually clicked
+                if step_type == "Step3" and bank in ["AMBOSS", "COMLEX"] and not auto_convert:
+                    showInfo(f"Step 3 is not available for {bank}. Please select Step 1 or Step 2.")
+                # For invalid IDs during auto-convert, just clear output silently
+                output_text.clear()
+                stats_label.setText("No valid IDs found")
+                stats_label.setStyleSheet("color: gray; font-style: italic;")
+                return
+            
             output_text.setPlainText(converted)
             
             # Update stats
-            id_count = len(clean_and_extract_ids(ids_text))
-            stats_label.setText(f"✓ Converted {id_count} question ID(s)")
-            stats_label.setStyleSheet("color: green; font-weight: bold;")
-            
-            # Add to history
-            add_to_history(ids_text, step_type, id_count)
+            id_count = len(clean_and_extract_ids(ids_text, bank))
+            if id_count > 0:
+                stats_label.setText(f"✓ Converted {id_count} question ID(s)")
+                stats_label.setStyleSheet("color: green; font-weight: bold;")
+                
+                # Add to history
+                add_to_history(ids_text, step_type, bank, id_count)
+            else:
+                stats_label.setText("No valid IDs found")
+                stats_label.setStyleSheet("color: gray; font-style: italic;")
             
         except Exception as e:
-            showInfo(f"Error converting IDs: {str(e)}")
+            # Only show error popup if manually clicked
+            if not auto_convert:
+                showInfo(f"Error converting IDs: {str(e)}")
             stats_label.setText(f"✗ Error: {str(e)}")
             stats_label.setStyleSheet("color: red; font-weight: bold;")
     
@@ -563,13 +752,9 @@ def show_converter_dialog():
         
         clipboard = QApplication.clipboard()
         clipboard.setText(converted_text)
-        if step1_radio.isChecked():
-            step = "Step 1"
-        elif step3_radio.isChecked():
-            step = "Step 3"
-        else:
-            step = "Step 2"
-        tooltip(f"Search query for {step} copied to clipboard!")
+        bank = get_bank_name()
+        step = get_step_name()
+        tooltip(f"Search query for {bank} - {step} copied to clipboard!")
     
     def search_clicked():
         converted_text = output_text.toPlainText()
@@ -586,8 +771,8 @@ def show_converter_dialog():
         dialog.close()
     
     def close_clicked():
-        # Save preference when closing (just in case)
-        save_step_preference()
+        # Save preferences when closing (just in case)
+        save_preferences()
         dialog.close()
     
     def load_file_clicked():
@@ -604,25 +789,33 @@ def show_converter_dialog():
     close_btn.clicked.connect(close_clicked)
     file_btn.clicked.connect(load_file_clicked)
     
-    # Connect radio buttons
-    step1_radio.toggled.connect(update_step_label)
-    step2_radio.toggled.connect(update_step_label)
-    step3_radio.toggled.connect(update_step_label)
-    
     # Auto-convert when text changes (with a small delay)
     def on_text_changed():
         # Update stats preview
         text = input_text.toPlainText().strip()
         if text:
-            id_count = len(clean_and_extract_ids(text))
+            bank = get_selected_bank()
+            id_count = len(clean_and_extract_ids(text, bank))
             stats_label.setText(f"Found {id_count} ID(s) - auto-converting...")
             stats_label.setStyleSheet("color: gray; font-style: italic;")
-            QTimer.singleShot(500, convert_clicked)  # 500ms delay
+            QTimer.singleShot(500, lambda: convert_clicked(auto_convert=True))  # 500ms delay
         else:
+            # Clear output when input is empty
+            output_text.clear()
             stats_label.setText("Ready to convert")
             stats_label.setStyleSheet("color: gray; font-style: italic;")
     
     input_text.textChanged.connect(on_text_changed)
+    
+    # Connect bank radio buttons
+    uworld_radio.toggled.connect(update_labels)
+    amboss_radio.toggled.connect(update_labels)
+    comlex_radio.toggled.connect(update_labels)
+    
+    # Connect step radio buttons
+    step1_radio.toggled.connect(update_labels)
+    step2_radio.toggled.connect(update_labels)
+    step3_radio.toggled.connect(update_labels)
     
     dialog.show()
 
@@ -637,48 +830,85 @@ def on_browser_context_menu(browser: Browser, menu: QMenu):
     menu.addSeparator()
     
     # Add action to extract question IDs
-    action = menu.addAction("📋 Copy UWorld Question ID(s)")
+    action = menu.addAction("📋 Copy Question ID(s)")
     action.triggered.connect(lambda: extract_question_ids(browser, selected_cards))
 
 def extract_question_ids(browser: Browser, card_ids):
-    """Extract UWorld question IDs from selected cards"""
+    """Extract UWorld/AMBOSS/COMLEX question IDs from selected cards"""
     if not card_ids:
         return
     
-    extracted_ids = []
+    extracted_ids = {
+        "UWorld": [],
+        "AMBOSS": [],
+        "COMLEX": []
+    }
     
     for card_id in card_ids:
         card = mw.col.get_card(card_id)
         note = card.note()
         
-        # Search for UWorld ID in tags
+        # Search for IDs in tags
         for tag in note.tags:
-            # Match patterns like #AK_Step1_v12::#UWorld::Step::12345
-            # or #AK_Step2_v12::#UWorld::Step::67890
-            # or #AK_Step3_v12::#UWorld::98765
-            match = re.search(r'#AK_Step[123]_v\d+::#UWorld::(?:Step::)?(\d+)', tag)
-            if match:
-                question_id = match.group(1)
-                if question_id not in extracted_ids:
-                    extracted_ids.append(question_id)
+            # UWorld pattern: #AK_Step[123]_v##::#UWorld::Step::12345
+            uworld_match = re.search(r'#AK_Step[123]_v\d+::#UWorld::Step::(\d+)', tag)
+            if uworld_match:
+                question_id = uworld_match.group(1)
+                if question_id not in extracted_ids["UWorld"]:
+                    extracted_ids["UWorld"].append(question_id)
+                continue
+            
+            # UWorld Step 3 pattern: #AK_Step3_v##::#UWorld::98765
+            uworld_step3_match = re.search(r'#AK_Step3_v\d+::#UWorld::(\d+)', tag)
+            if uworld_step3_match:
+                question_id = uworld_step3_match.group(1)
+                if question_id not in extracted_ids["UWorld"]:
+                    extracted_ids["UWorld"].append(question_id)
+                continue
+            
+            # AMBOSS pattern: #AK_Step[12]_v##::#AMBOSS::-aaDMQ
+            amboss_match = re.search(r'#AK_Step[12]_v\d+::#AMBOSS::([a-zA-Z0-9\-_]+)', tag)
+            if amboss_match:
+                question_id = amboss_match.group(1)
+                if question_id not in extracted_ids["AMBOSS"]:
+                    extracted_ids["AMBOSS"].append(question_id)
+                continue
+            
+            # COMLEX pattern: #AK_Step[12]_v##::#UWorld::COMLEX::106228
+            comlex_match = re.search(r'#AK_Step[12]_v\d+::#UWorld::COMLEX::(\d+)', tag)
+            if comlex_match:
+                question_id = comlex_match.group(1)
+                if question_id not in extracted_ids["COMLEX"]:
+                    extracted_ids["COMLEX"].append(question_id)
+                continue
     
-    if extracted_ids:
-        # Copy to clipboard
-        id_text = ", ".join(extracted_ids)
+    # Build result message
+    all_ids = []
+    result_parts = []
+    
+    for bank, ids in extracted_ids.items():
+        if ids:
+            all_ids.extend(ids)
+            result_parts.append(f"{bank}: {len(ids)}")
+    
+    if all_ids:
+        # Copy all IDs to clipboard (separated by commas)
+        id_text = ", ".join(all_ids)
         clipboard = QApplication.clipboard()
         clipboard.setText(id_text)
         
-        count = len(extracted_ids)
+        count = len(all_ids)
+        banks_info = " (" + ", ".join(result_parts) + ")"
         if count == 1:
             tooltip(f"Copied question ID: {id_text}")
         else:
-            tooltip(f"Copied {count} question IDs to clipboard!")
+            tooltip(f"Copied {count} question IDs{banks_info} to clipboard!")
     else:
-        tooltip("No UWorld question IDs found in selected card(s)")
+        tooltip("No question IDs found in selected card(s)")
 
 # Add menu item to Tools menu
 def add_menu_item():
-    action = QAction("USMLE Question ID Converter", mw)
+    action = QAction("UWorld AMBOSS COMLEX - Question ID Converter", mw)
     action.triggered.connect(show_converter_dialog)
     mw.form.menuTools.addAction(action)
 

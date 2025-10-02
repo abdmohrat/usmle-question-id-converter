@@ -1,5 +1,5 @@
 {
-    "package": "usmle_converter",
-    "name": "USMLE Question ID Converter",
-    "author": "abdmohrat"
+    "package": "usmle_question_converter",
+    "name": "UWorld AMBOSS COMLEX - Question ID Converter",
+    "author": "Abdalrahman Mahrat"
 }
