@@ -44,7 +44,7 @@ https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
 - 📊 **Conversion History** - Track your last 20 conversions with dates and counts
 - 📈 **Live Stats** - See ID count in real-time as you type
 - ✨ **Enhanced UI** - Larger dialog (850x600) with better visual feedback
-- 🎨 **Dark Mode Support** - Perfect visibility in both light and dark themes
+- 🎨 **Dark Mode Support** - Perfect visibility in both light and dark themes 
 
 ## 📸 Screenshots
 
