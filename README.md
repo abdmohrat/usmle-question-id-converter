@@ -167,7 +167,7 @@ tag:#AK_Step3_v12::#UWorld::21656 OR tag:#AK_Step3_v12::#UWorld::19263
 
 ### Custom Patterns for Other Question Banks
 
-Want to use with **USMLEPREPS**, **Coursology**, or another deck?
+Want to use with any other deck?
 
 1. Click "⚙️ Custom Patterns"
 2. Select the appropriate bank tab
