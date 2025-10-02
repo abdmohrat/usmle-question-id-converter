@@ -2,20 +2,27 @@
 
 [![AnkiWeb](https://img.shields.io/badge/AnkiWeb-699193084-blue)](https://ankiweb.net/shared/info/699193084)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-1.3.0-green)](https://github.com/abdmohrat/usmle-question-id-converter/releases)
+[![Version](https://img.shields.io/badge/version-1.3.1-green)](https://github.com/abdmohrat/usmle-question-id-converter/releases)
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/abdmohrat)
 
 Convert question IDs from **UWorld**, **AMBOSS**, and **COMLEX** to Anki search queries instantly! Perfect for medical students using the **AnKing_v12 deck** from AnkiHub. Also supports USMLEPREPS, Coursology, and other question banks via custom patterns.
 
 ## 📺 Demo Video
 
-https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
+https://github.com/user-attachments/assets/f5e05a6e-26f7-430f-abbb-bb31ece9b53c
 
 **Complete workflow:** Copy question IDs from your question bank → Paste in addon → Search in Anki!
 
-## 🎉 What's New in v1.3.0
+## 🎉 What's New
 
-### Multi-Question Bank Support!
+### v1.3.1 - Keyboard Shortcuts! ⌨️
+
+- ⌨️ **Ctrl+Shift+U** - Open converter from anywhere in Anki
+- ⚡ **Ctrl+Enter** - Convert and search immediately
+- 🚪 **Esc** - Close dialog quickly
+- 💡 Shortcuts hint displayed in dialog
+
+### v1.3.0 - Multi-Question Bank Support!
 
 - 🏥 **UWorld Support** - Full Step 1, 2, and 3 coverage
 - 🎓 **AMBOSS Support** - Step 1 and 2 with alphanumeric IDs
@@ -35,6 +42,7 @@ https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
 - ✅ **Multiple Actions** - Copy to clipboard or search directly in Anki
 - ✅ **Clean Interface** - Simple, intuitive design
 - ✅ **Error Handling** - Filters out invalid characters automatically
+- ⌨️ **Keyboard Shortcuts** - Ctrl+Shift+U to open, Ctrl+Enter to search, Esc to close
 
 ### Advanced Features (v1.2.0+)
 - 📁 **File Import** - Load IDs from .txt or .csv files for batch processing
@@ -44,12 +52,12 @@ https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
 - 📊 **Conversion History** - Track your last 20 conversions with dates and counts
 - 📈 **Live Stats** - See ID count in real-time as you type
 - ✨ **Enhanced UI** - Larger dialog (850x600) with better visual feedback
-- 🎨 **Dark Mode Support** - Perfect visibility in both light and dark themes
+- 🎨 **Dark Mode Support** - Perfect visibility in both light and dark themes 
 
 ## 📸 Screenshots
 
 ### Main Interface
-![Main Interface](images/main-interface.png)
+![Main Interface](images/main-interface2.png)
 *Convert question IDs from UWorld, AMBOSS, or COMLEX*
 
 ### Search Results in Anki
@@ -70,6 +78,14 @@ https://github.com/user-attachments/assets/147e24bd-d391-4760-a06a-459201630bf5
 3. Restart Anki
 
 ## 🔧 Usage
+
+### ⌨️ Keyboard Shortcuts (New!)
+
+Make your workflow even faster with keyboard shortcuts:
+
+- **Ctrl+Shift+U** - Open the converter dialog from anywhere in Anki
+- **Ctrl+Enter** - Convert and search in Anki immediately (inside dialog)
+- **Esc** - Close the dialog
 
 ### Quick Start with Question Banks
 
@@ -192,7 +208,12 @@ Found a bug or have a suggestion? Please [open an issue](https://github.com/abdm
 
 ## 📝 Changelog
 
-### v1.3.0 (Latest - October 2025)
+### v1.3.1 (Latest - October 2025)
+- ⌨️ **Keyboard Shortcuts**: Added Ctrl+Shift+U (open), Ctrl+Enter (search), Esc (close)
+- 💡 **Shortcuts Hint**: Visual guide for keyboard shortcuts in dialog
+- ⚡ **Speed Boost**: Faster workflow with keyboard navigation
+
+### v1.3.0 (October 2025)
 - 🏥 **Multi-Bank Support**: Added AMBOSS and COMLEX support
 - 🔄 **Smart ID Detection**: Handles both numeric and alphanumeric IDs
 - 💾 **Bank Memory**: Remembers last selected question bank

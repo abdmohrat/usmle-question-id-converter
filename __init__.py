@@ -1,6 +1,6 @@
 # UWorld AMBOSS COMLEX - Question ID Converter for Anki
 # Author: abdmohrat
-# Version: 1.3.0
+# Version: 1.3.1
 
 from aqt import mw, gui_hooks
 from aqt.qt import *
@@ -539,6 +539,11 @@ def show_converter_dialog():
     """)
     main_layout.addWidget(instructions)
     
+    # Keyboard shortcuts hint
+    shortcuts_hint = QLabel("💡 Shortcuts: Ctrl+Shift+U (open) | Ctrl+Enter (search) | Esc (close)")
+    shortcuts_hint.setStyleSheet("color: gray; font-size: 10px; font-style: italic;")
+    main_layout.addWidget(shortcuts_hint)
+    
     # Question Bank selection
     bank_group = QGroupBox("Select Question Bank:")
     bank_layout = QHBoxLayout()
@@ -817,6 +822,15 @@ def show_converter_dialog():
     step2_radio.toggled.connect(update_labels)
     step3_radio.toggled.connect(update_labels)
     
+    # Setup dialog keyboard shortcuts
+    # Ctrl+Enter: Convert and search immediately
+    search_shortcut = QShortcut(QKeySequence("Ctrl+Return"), dialog)
+    search_shortcut.activated.connect(search_clicked)
+    
+    # Esc: Close dialog (already handled by Qt, but making it explicit)
+    close_shortcut = QShortcut(QKeySequence("Esc"), dialog)
+    close_shortcut.activated.connect(close_clicked)
+    
     dialog.show()
 
 # Context menu integration for Browser
@@ -912,8 +926,15 @@ def add_menu_item():
     action.triggered.connect(show_converter_dialog)
     mw.form.menuTools.addAction(action)
 
+def setup_shortcuts():
+    """Setup global keyboard shortcuts"""
+    # Global shortcut: Ctrl+Shift+U to open converter
+    shortcut = QShortcut(QKeySequence("Ctrl+Shift+U"), mw)
+    shortcut.activated.connect(show_converter_dialog)
+
 # Initialize the addon
 add_menu_item()
+setup_shortcuts()
 
 # Add browser context menu hook
 gui_hooks.browser_will_show_context_menu.append(on_browser_context_menu)
