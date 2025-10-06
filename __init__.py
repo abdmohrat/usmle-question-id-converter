@@ -59,12 +59,14 @@ def clean_and_extract_ids(text, bank="UWorld"):
         if bank == "AMBOSS":
             # AMBOSS: Keep alphanumeric, hyphens, and underscores
             clean_id = re.sub(r'[^a-zA-Z0-9\-_]', '', item)
+            # AMBOSS IDs must contain at least one letter (not pure numbers)
+            if clean_id and re.search(r'[a-zA-Z]', clean_id):
+                ids.append(clean_id)
         else:
             # UWorld, COMLEX: Only digits
             clean_id = re.sub(r'\D', '', item)
-        
-        if clean_id:  # Only add if we have a valid ID
-            ids.append(clean_id)
+            if clean_id:  # Only add if we have a valid ID
+                ids.append(clean_id)
     
     return ids
 
@@ -597,24 +599,6 @@ def show_converter_dialog():
     input_text.setMaximumHeight(100)
     main_layout.addWidget(input_text)
     
-    # Auto-load from clipboard if it contains potential IDs
-    clipboard = QApplication.clipboard()
-    clipboard_text = clipboard.text().strip()
-    
-    if clipboard_text:
-        # Check if clipboard might contain question IDs
-        # Look for numbers or alphanumeric patterns
-        has_numbers = bool(re.search(r'\d+', clipboard_text))
-        has_amboss_pattern = bool(re.search(r'[a-zA-Z0-9\-_]{4,}', clipboard_text))
-        
-        # If clipboard looks like it might contain IDs, auto-load it
-        if has_numbers or has_amboss_pattern:
-            # Only auto-load if it's not too long (prevent pasting entire documents)
-            if len(clipboard_text) < 5000:  # Max 5000 characters
-                input_text.setPlainText(clipboard_text)
-                # Show tooltip to let user know
-                QTimer.singleShot(100, lambda: tooltip("📋 Clipboard content auto-loaded!", period=2000))
-    
     # Stats label
     stats_label = QLabel("Ready to convert")
     stats_label.setStyleSheet("color: gray; font-style: italic;")
@@ -829,6 +813,66 @@ def show_converter_dialog():
             stats_label.setStyleSheet("color: gray; font-style: italic;")
     
     input_text.textChanged.connect(on_text_changed)
+    
+    # Auto-load from clipboard if it contains potential IDs (AFTER textChanged is connected)
+    clipboard = QApplication.clipboard()
+    clipboard_text = clipboard.text().strip()
+    
+    if clipboard_text:
+        # More intelligent ID detection
+        # Skip if clipboard contains common document/text markers
+        skip_markers = [
+            '<b>', '<i>', '<a>', 'http', 'www.', '@', 'README', 'NEW in', 
+            'What It Does', 'Features:', 'Requirements:', 'I am', 'I will',
+            'the ', 'and ', 'for ', 'with ', 'that ', 'this ', 'have ',
+            'Step 1', 'Step 2', 'Step 3', 'question bank'
+        ]
+        should_skip = any(marker in clipboard_text.lower() for marker in [m.lower() for m in skip_markers])
+        
+        # Also skip if text is too "wordy" (has many spaces relative to content)
+        # Quick check: if clipboard is mostly digits and spaces, allow higher space ratio and line length
+        digits_and_spaces = sum(c.isdigit() or c.isspace() or c in ',-_' for c in clipboard_text)
+        mostly_numbers = (digits_and_spaces / len(clipboard_text)) > 0.85 if len(clipboard_text) > 0 else False
+        
+        if not mostly_numbers:
+            space_ratio = clipboard_text.count(' ') / len(clipboard_text) if len(clipboard_text) > 0 else 0
+            if space_ratio > 0.15:  # More than 15% spaces = probably text, not IDs
+                should_skip = True
+            
+            # Skip if line length suggests it's prose (long lines = sentences)
+            lines = clipboard_text.split('\n')
+            avg_line_length = sum(len(line) for line in lines) / len(lines) if lines else 0
+            if avg_line_length > 100:  # Average line longer than 100 chars = probably text
+                should_skip = True
+        
+        if not should_skip:
+            # Check if clipboard looks like question IDs
+            parts = re.split(r'[,\s\n\t]+', clipboard_text)
+            id_like_parts = 0
+            total_parts = 0
+            
+            for part in parts[:100]:  # Check up to 100 parts
+                part = part.strip()
+                if not part:
+                    continue
+                total_parts += 1
+                
+                # Count as ID-like if pure digits or AMBOSS format
+                if re.match(r'^\d+$', part):  # Any number of digits
+                    if len(part) <= 10:
+                        id_like_parts += 1
+                elif re.match(r'^[\-_][a-zA-Z0-9]{3,}$', part) or re.match(r'^[a-zA-Z0-9]{2,}[\-_][a-zA-Z0-9]+$', part):
+                    # AMBOSS-style with dash/underscore
+                    if len(part) <= 10:
+                        id_like_parts += 1
+            
+            # Auto-load if >80% are ID-like
+            if total_parts > 0 and total_parts <= 200:
+                if (id_like_parts / total_parts) > 0.8:
+                    if len(clipboard_text) < 2000:
+                        input_text.setPlainText(clipboard_text)
+                        # Show tooltip
+                        QTimer.singleShot(100, lambda: tooltip("📋 Clipboard content auto-loaded!", period=2000))
     
     # Connect bank radio buttons
     uworld_radio.toggled.connect(update_labels)
