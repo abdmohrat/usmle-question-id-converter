@@ -2,7 +2,7 @@
 
 [![AnkiWeb](https://img.shields.io/badge/AnkiWeb-699193084-blue)](https://ankiweb.net/shared/info/699193084)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-1.3.1-green)](https://github.com/abdmohrat/usmle-question-id-converter/releases)
+[![Version](https://img.shields.io/badge/version-1.4.0-green)](https://github.com/abdmohrat/usmle-question-id-converter/releases)
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/abdmohrat)
 
 Convert question IDs from **UWorld**, **AMBOSS**, and **COMLEX** to Anki search queries instantly! Perfect for medical students using the **AnKing_v12 deck** from AnkiHub. Also supports USMLEPREPS, Coursology, and other question banks via custom patterns.
@@ -14,6 +14,14 @@ https://github.com/user-attachments/assets/f5e05a6e-26f7-430f-abbb-bb31ece9b53c
 **Complete workflow:** Copy question IDs from your question bank → Paste in addon → Search in Anki!
 
 ## 🎉 What's New
+
+### v1.4.0 - Clipboard Auto-Load! 📋
+
+- 📋 **Clipboard Auto-Load** - Automatically loads clipboard content when opening the dialog
+- ⚡ **Smart Detection** - Detects if clipboard contains question IDs
+- 🛡️ **Safety Limit** - Won't auto-load documents over 5000 characters
+- 💡 **Visual Feedback** - Shows tooltip when clipboard is auto-loaded
+- 🚀 **One Less Step** - No need to paste manually anymore!
 
 ### v1.3.1 - Keyboard Shortcuts! ⌨️
 
@@ -39,6 +47,7 @@ https://github.com/user-attachments/assets/f5e05a6e-26f7-430f-abbb-bb31ece9b53c
 - ✅ **Smart ID Recognition** - Handles numeric (UWorld/COMLEX) and alphanumeric (AMBOSS) IDs
 - ✅ **Smart Memory** - Remembers your last bank and step selection  
 - ✅ **Auto-conversion** - Converts IDs as you type
+- 📋 **Clipboard Auto-Load** - Automatically loads clipboard content when opening
 - ✅ **Multiple Actions** - Copy to clipboard or search directly in Anki
 - ✅ **Clean Interface** - Simple, intuitive design
 - ✅ **Error Handling** - Filters out invalid characters automatically
@@ -79,13 +88,15 @@ https://github.com/user-attachments/assets/f5e05a6e-26f7-430f-abbb-bb31ece9b53c
 
 ## 🔧 Usage
 
-### ⌨️ Keyboard Shortcuts (New!)
+### ⌨️ Keyboard Shortcuts
 
 Make your workflow even faster with keyboard shortcuts:
 
 - **Ctrl+Shift+U** - Open the converter dialog from anywhere in Anki
 - **Ctrl+Enter** - Convert and search in Anki immediately (inside dialog)
 - **Esc** - Close the dialog
+
+The dialog will also **automatically load your clipboard** if it contains question IDs!
 
 ### Quick Start with Question Banks
 
@@ -208,7 +219,14 @@ Found a bug or have a suggestion? Please [open an issue](https://github.com/abdm
 
 ## 📝 Changelog
 
-### v1.3.1 (Latest - October 2025)
+### v1.4.0 (Latest - October 2025)
+- 📋 **Clipboard Auto-Load**: Automatically loads clipboard content when dialog opens
+- ⚡ **Smart Detection**: Detects if clipboard contains question IDs (numbers/alphanumeric)
+- 🛡️ **Safety Limit**: Won't auto-load if clipboard exceeds 5000 characters
+- 💡 **Visual Feedback**: Shows tooltip when clipboard is auto-loaded
+- 🚀 **Workflow Improvement**: One less manual step in the conversion process
+
+### v1.3.1 (October 2025)
 - ⌨️ **Keyboard Shortcuts**: Added Ctrl+Shift+U (open), Ctrl+Enter (search), Esc (close)
 - 💡 **Shortcuts Hint**: Visual guide for keyboard shortcuts in dialog
 - ⚡ **Speed Boost**: Faster workflow with keyboard navigation

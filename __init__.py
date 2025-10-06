@@ -1,6 +1,6 @@
 # UWorld AMBOSS COMLEX - Question ID Converter for Anki
 # Author: abdmohrat
-# Version: 1.3.1
+# Version: 1.4.0
 
 from aqt import mw, gui_hooks
 from aqt.qt import *
@@ -540,7 +540,7 @@ def show_converter_dialog():
     main_layout.addWidget(instructions)
     
     # Keyboard shortcuts hint
-    shortcuts_hint = QLabel("💡 Shortcuts: Ctrl+Shift+U (open) | Ctrl+Enter (search) | Esc (close)")
+    shortcuts_hint = QLabel("💡 Shortcuts: Ctrl+Shift+U (open) | Ctrl+Enter (search) | Esc (close) | Auto-loads clipboard!")
     shortcuts_hint.setStyleSheet("color: gray; font-size: 10px; font-style: italic;")
     main_layout.addWidget(shortcuts_hint)
     
@@ -596,6 +596,24 @@ def show_converter_dialog():
     input_text.setPlaceholderText("Paste your question IDs here (any format: comma, space, or newline separated)...")
     input_text.setMaximumHeight(100)
     main_layout.addWidget(input_text)
+    
+    # Auto-load from clipboard if it contains potential IDs
+    clipboard = QApplication.clipboard()
+    clipboard_text = clipboard.text().strip()
+    
+    if clipboard_text:
+        # Check if clipboard might contain question IDs
+        # Look for numbers or alphanumeric patterns
+        has_numbers = bool(re.search(r'\d+', clipboard_text))
+        has_amboss_pattern = bool(re.search(r'[a-zA-Z0-9\-_]{4,}', clipboard_text))
+        
+        # If clipboard looks like it might contain IDs, auto-load it
+        if has_numbers or has_amboss_pattern:
+            # Only auto-load if it's not too long (prevent pasting entire documents)
+            if len(clipboard_text) < 5000:  # Max 5000 characters
+                input_text.setPlainText(clipboard_text)
+                # Show tooltip to let user know
+                QTimer.singleShot(100, lambda: tooltip("📋 Clipboard content auto-loaded!", period=2000))
     
     # Stats label
     stats_label = QLabel("Ready to convert")
