@@ -1,6 +1,6 @@
 # UWorld AMBOSS COMLEX - Question ID Converter for Anki
 # Author: abdmohrat
-# Version: 1.4.0
+# Version: 1.4.1
 
 from aqt import mw, gui_hooks
 from aqt.qt import *
@@ -12,6 +12,11 @@ import os
 
 # Configuration key for storing user preferences
 CONFIG_KEY = "usmle_converter"
+
+# USMLE Core promo (shown inside addon UI)
+USMLECORE_URL = "https://usmlecore.com/?utm_source=anki-addon&utm_medium=referral&utm_campaign=qid-converter"
+USMLECORE_DISCOUNT_EGP = "USMLEQID"
+USMLECORE_DISCOUNT_USD = "USMLEQIDUSD"
 
 def get_config():
     """Get addon configuration with defaults"""
@@ -453,6 +458,165 @@ def show_history_dialog(parent):
     
     dialog.exec()
 
+def show_usmlecore_dialog(parent):
+    """Show an in-addon promo dialog for USMLE Core (non-intrusive, user-initiated)."""
+    dialog = QDialog(parent)
+    dialog.setWindowTitle("USMLE Core — Addon User Perks")
+    dialog.setMinimumWidth(640)
+
+    layout = QVBoxLayout()
+
+    header = QLabel(
+        """
+        <div style="font-size: 20px; font-weight: 800; letter-spacing: 0.5px;">
+          USMLE<span style="color:#6d28d9;">CORE</span>
+        </div>
+        <div style="margin-top:6px; color:#6b7280; font-size: 12px;">
+          Practice that feels like the real exam — with Test Mode, Tutor Mode, and AI.
+        </div>
+        """
+    )
+    header.setTextFormat(Qt.TextFormat.RichText)
+    header.setWordWrap(True)
+    layout.addWidget(header)
+
+    card = QFrame()
+    card.setStyleSheet(
+        """
+        QFrame {
+            background-color: #0b1220;
+            border: 1px solid #1f2a44;
+            border-radius: 12px;
+        }
+        QLabel { color: #e5e7eb; }
+        """
+    )
+    card_layout = QVBoxLayout(card)
+
+    highlights = QLabel(
+        """
+        <div style="font-size: 12px; line-height: 1.5;">
+          <div style="font-weight:700; margin-bottom:6px;">Why addon users love it</div>
+          • AI Tutor while solving questions (context-aware)<br/>
+          • One-click Anki tag search copy (skip manual tagging)<br/>
+          • Community + study partner search<br/>
+          • Analytics to track performance and weak areas
+        </div>
+        """
+    )
+    highlights.setTextFormat(Qt.TextFormat.RichText)
+    highlights.setWordWrap(True)
+    card_layout.addWidget(highlights)
+
+    perks = QLabel(
+        f"""
+        <div style="margin-top:10px; font-size:12px; line-height:1.5;">
+          <div style="font-weight:700; margin-bottom:6px;">Exclusive discount codes for this addon</div>
+          <div style="color:#93c5fd; margin-bottom:6px;">
+            Limited: first 20 users get the full discount (after that, discounts may be reduced).
+          </div>
+          <div style="color:#cbd5e1;">
+            • <span style="font-family:monospace; font-weight:700; color:#a78bfa;">{USMLECORE_DISCOUNT_EGP}</span>
+            — 5000 EGP off<br/>
+            • <span style="font-family:monospace; font-weight:700; color:#a78bfa;">{USMLECORE_DISCOUNT_USD}</span>
+            — $50 off
+          </div>
+        </div>
+        """
+    )
+    perks.setTextFormat(Qt.TextFormat.RichText)
+    perks.setWordWrap(True)
+    card_layout.addWidget(perks)
+
+    layout.addWidget(card)
+
+    def copy_code(code: str):
+        QApplication.clipboard().setText(code)
+        tooltip(f"Copied: {code}")
+
+    buttons = QHBoxLayout()
+
+    open_btn = QPushButton("Open USMLECORE.com")
+    open_btn.setStyleSheet(
+        """
+        QPushButton {
+            background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 #6d28d9, stop:1 #2563eb);
+            color: white;
+            font-weight: 800;
+            border-radius: 8px;
+            padding: 10px 14px;
+            border: none;
+        }
+        QPushButton:hover {
+            background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 #7c3aed, stop:1 #3b82f6);
+        }
+        QPushButton:pressed {
+            background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 #5b21b6, stop:1 #1d4ed8);
+        }
+        """
+    )
+    open_btn.clicked.connect(lambda: openLink(USMLECORE_URL))
+
+    copy_egp_btn = QPushButton(f"Copy {USMLECORE_DISCOUNT_EGP}")
+    copy_egp_btn.setToolTip("Copies the EGP discount code to clipboard")
+    copy_egp_btn.setStyleSheet(
+        """
+        QPushButton {
+            background-color: #111827;
+            color: #e5e7eb;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 10px 12px;
+            border: 1px solid #1f2a44;
+        }
+        QPushButton:hover { background-color: #0f172a; }
+        QPushButton:pressed { background-color: #0b1220; }
+        """
+    )
+    copy_egp_btn.clicked.connect(lambda: copy_code(USMLECORE_DISCOUNT_EGP))
+
+    copy_usd_btn = QPushButton(f"Copy {USMLECORE_DISCOUNT_USD}")
+    copy_usd_btn.setToolTip("Copies the USD discount code to clipboard")
+    copy_usd_btn.setStyleSheet(
+        """
+        QPushButton {
+            background-color: #111827;
+            color: #e5e7eb;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 10px 12px;
+            border: 1px solid #1f2a44;
+        }
+        QPushButton:hover { background-color: #0f172a; }
+        QPushButton:pressed { background-color: #0b1220; }
+        """
+    )
+    copy_usd_btn.clicked.connect(lambda: copy_code(USMLECORE_DISCOUNT_USD))
+
+    buttons.addWidget(open_btn)
+    buttons.addSpacing(6)
+    buttons.addWidget(copy_egp_btn)
+    buttons.addWidget(copy_usd_btn)
+
+    layout.addLayout(buttons)
+
+    footer = QLabel(
+        """
+        <div style="margin-top:8px; color:#6b7280; font-size:11px;">
+          Tip: If you love this addon, you'll love the built-in Anki integration inside USMLE Core.
+        </div>
+        """
+    )
+    footer.setTextFormat(Qt.TextFormat.RichText)
+    footer.setWordWrap(True)
+    layout.addWidget(footer)
+
+    dialog.setLayout(layout)
+    dialog.exec()
+
 def show_converter_dialog():
     """
     Show the main converter dialog
@@ -484,26 +648,35 @@ def show_converter_dialog():
     top_bar.addWidget(file_btn)
     top_bar.addStretch()
     
-    # Right side - support buttons
-    support_btn = QPushButton("☕ Buy Me a Coffee")
-    support_btn.setStyleSheet("""
+    # Right side - promo + review
+    usmlecore_btn = QPushButton("Studying USMLE? Try USMLE Core!")
+    usmlecore_btn.setToolTip("USMLE Core + exclusive addon discounts + built-in Anki integration")
+    usmlecore_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+    usmlecore_btn.setMinimumWidth(260)
+    usmlecore_btn.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Fixed)
+    usmlecore_btn.setStyleSheet(
+        """
         QPushButton {
-            background-color: #29abe0;
+            background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 #6d28d9, stop:1 #2563eb);
             color: white;
-            font-weight: bold;
-            border-radius: 5px;
-            padding: 6px 12px;
+            font-weight: 800;
+            border-radius: 6px;
+            padding: 6px 10px;
             border: none;
             font-size: 11px;
         }
         QPushButton:hover {
-            background-color: #1a8cb8;
+            background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 #7c3aed, stop:1 #3b82f6);
         }
         QPushButton:pressed {
-            background-color: #127096;
+            background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 #5b21b6, stop:1 #1d4ed8);
         }
-    """)
-    support_btn.clicked.connect(lambda: openLink("https://ko-fi.com/abdmohrat"))
+        """
+    )
+    usmlecore_btn.clicked.connect(lambda: show_usmlecore_dialog(dialog))
     
     # Review button
     review_btn = QPushButton("⭐ Rate Addon")
@@ -526,7 +699,7 @@ def show_converter_dialog():
     """)
     review_btn.clicked.connect(lambda: openLink("https://ankiweb.net/shared/review/699193084"))
     
-    top_bar.addWidget(support_btn)
+    top_bar.addWidget(usmlecore_btn)
     top_bar.addSpacing(10)
     top_bar.addWidget(review_btn)
     

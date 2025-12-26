@@ -2,8 +2,7 @@
 
 [![AnkiWeb](https://img.shields.io/badge/AnkiWeb-699193084-blue)](https://ankiweb.net/shared/info/699193084)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-1.4.0-green)](https://github.com/abdmohrat/usmle-question-id-converter/releases)
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/abdmohrat)
+[![Version](https://img.shields.io/badge/version-1.4.1-green)](https://github.com/abdmohrat/usmle-question-id-converter/releases)
 
 Convert question IDs from **UWorld**, **AMBOSS**, and **COMLEX** to Anki search queries instantly! Perfect for medical students using the **AnKing_v12 deck** from AnkiHub. Also supports USMLEPREPS, Coursology, and other question banks via custom patterns.
 
@@ -289,7 +288,6 @@ Contributions are welcome! Feel free to:
 If this addon helped you with your medical studies, consider:
 - ⭐ **Starring this repository**
 - 📝 **[Rating it on AnkiWeb](https://ankiweb.net/shared/review/699193084)**
-- ☕ **[Buying me a coffee](https://ko-fi.com/abdmohrat)** to support development
 - 🐛 **Reporting bugs or suggesting features**
 - 📢 **Sharing with fellow medical students**
 
