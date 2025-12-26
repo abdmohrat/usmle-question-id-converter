@@ -16,3 +16,5 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+# Local agent instructions / contributor guide (generated per environment)
+AGENTS.md
